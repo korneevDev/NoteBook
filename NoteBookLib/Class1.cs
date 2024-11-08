@@ -1,8 +1,0 @@
-﻿namespace NoteBookLib
-{
-    public class Class1
-    {
-
-        public Class1() {}
-    }
-}
