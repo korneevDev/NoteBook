@@ -1,4 +1,4 @@
-﻿namespace NoteBookUI
+﻿namespace NoteBookLib
 {
     public interface IDocument
     {
@@ -8,13 +8,21 @@
         public void SetNewContent(string content);
 
         public void Show(ITextBox textBox);
+
+        public void Save(IFileHandler fileHandler);
+        public void Save(string filePath,  IFileHandler fileHandler);
+
+        public string GetExtension();
+
+        public bool IsNewFile();
     }
 
     public interface ITextBox
     {
         public void ShowString(string str);
     }
-        public class TextDocumentModel : IDocument
+
+    public class TextDocumentModel : IDocument
     { 
         public string _filePath;
         private string _content;
@@ -40,7 +48,7 @@
             this._isModified = true;
         }
 
-        public string Title() => (string.IsNullOrEmpty(_filePath) ? "New _document" : Path.GetFileName(_filePath)) + 
+        public string Title() => (string.IsNullOrEmpty(_filePath) ? "New_document" : Path.GetFileName(_filePath)) + 
             (_isModified ? " *" : "");
 
         public bool CanBeRemoved() => !_isModified;
@@ -49,5 +57,22 @@
         {
             textBox.ShowString(this._content);
         }
+
+        public void Save(IFileHandler fileHandler)
+        {
+            fileHandler.SaveDocument(_filePath, _content);
+            _isModified = false;
         }
+
+        public void Save(string filePath, IFileHandler fileHandler)
+        {
+            _filePath = filePath;
+            Save(fileHandler);
+            _isModified = false;
+        }
+
+        public string GetExtension() => ".txt";
+
+        public bool IsNewFile() => string.IsNullOrEmpty(_filePath);
+    }
 }

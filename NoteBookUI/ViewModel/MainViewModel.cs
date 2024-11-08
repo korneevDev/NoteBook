@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Windows;
+using NoteBookLib;
 
 
 namespace NoteBookUI.View
@@ -8,20 +9,22 @@ namespace NoteBookUI.View
     public class MainViewModel : OnPropertyChangedHandler
     {
 
-        public ObservableCollection<TabItemExtended> Tabs;
+        private ObservableCollection<TabItemExtended> _tabs;
 
         public MainViewModel()
         {
-            Tabs = [];
+            _tabs = [];
 
         }
+
+        public ObservableCollection<TabItemExtended> getTabsList() => _tabs;
 
         public void CreateNewTab()
         {
             var tabTextEditor = new TextEditor();
             tabTextEditor.CreateFile();
             var newTab = new TabItemExtended(tabTextEditor);
-            Tabs.Add(newTab);
+            _tabs.Add(newTab);
         }
 
         public void CloseTab(TabItemExtended tab)
@@ -29,7 +32,7 @@ namespace NoteBookUI.View
             if (tab == null)
                 return;
 
-            if (!tab.TabViewModel.CanRemove())
+            if (!tab.CanRemoveTab())
             {
                 var result = MessageBox.Show(
                         "You have unsaved changes. Do you really want to close this tab?",
@@ -43,7 +46,7 @@ namespace NoteBookUI.View
                 }
             }
 
-            Tabs.Remove(tab);
+            _tabs.Remove(tab);
 
         }
 
@@ -62,7 +65,37 @@ namespace NoteBookUI.View
 
                 var newTab = new TabItemExtended(newTabViewModel);
  
-                Tabs.Add(newTab);
+                _tabs.Add(newTab);
+            }
+        }
+
+        public void SaveFile(TabItemExtended tab)
+        {
+            if (tab == null)
+                return;
+
+            if (tab.isNewFile())
+            {
+                SaveFileAs(tab);
+                return;
+            }
+
+            tab.Save();
+        }
+
+        public void SaveFileAs(TabItemExtended tab)
+        {
+            if (tab == null)
+                return;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+                
+                tab.Save(filePath);
             }
         }
     }

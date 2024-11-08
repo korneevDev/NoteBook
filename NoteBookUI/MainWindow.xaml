@@ -11,8 +11,12 @@
         <ToolBar DockPanel.Dock="Top">
             <Button Content="New Tab" Command="{Binding NewTabCommand}" />
             <Button Content="Open File" Command="{Binding OpenFileCommand}" />
-            <Button Content="Save File" Command="{Binding SaveFileCommand}" CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
-            <Button Content="Save As" Command="{Binding SaveFileAsCommand}" CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
+            <Button Content="Save File" 
+                    Command="{Binding SaveFileCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
+            <Button Content="Save As"  
+                    Command="{Binding SaveFileAsCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
         </ToolBar>
 
         <TabControl x:Name="TabControl" ItemsSource="{Binding Tabs}" SelectedIndex="0" >

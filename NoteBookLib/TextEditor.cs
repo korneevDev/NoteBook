@@ -1,6 +1,4 @@
-﻿using NoteBookLib;
-
-namespace NoteBookUI.View
+﻿namespace NoteBookLib
 {
     public class TextEditor
     {
@@ -34,6 +32,18 @@ namespace NoteBookUI.View
         {
             _document.Show(textBox);
         }
+
+        public void SaveFile(string filePath)
+        {
+            _fileManager.SaveFile(filePath, _document);
+        }
+
+        public void SaveFile()
+        {
+            _fileManager.SaveFile(_document);
+        }
+
+        public bool IsNewFile() => _document.IsNewFile();
 
         public string UpdateTitle() => _document.Title();
 

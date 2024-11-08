@@ -6,7 +6,9 @@ namespace NoteBookUI.View
 {
     public class MainViewComandManager
     {
-        public ObservableCollection<TabItemExtended> Tabs => mainViewModel.Tabs;
+
+        private readonly MainViewModel mainViewModel;
+        public ObservableCollection<TabItemExtended> Tabs => mainViewModel.getTabsList();
         
 
         public ICommand NewTabCommand { get; }
@@ -14,8 +16,9 @@ namespace NoteBookUI.View
 
         public ICommand OpenFileCommand { get; }
 
-        private MainViewModel mainViewModel;
+        public ICommand SaveFileCommand { get; }
 
+        public ICommand SaveFileAsCommand { get; }
 
         public MainViewComandManager()
         {
@@ -24,8 +27,10 @@ namespace NoteBookUI.View
             NewTabCommand = new RelayCommand(mainViewModel.CreateNewTab);
             CloseTabCommand = new RelayCommand<TabItemExtended>(mainViewModel.CloseTab);
             OpenFileCommand = new RelayCommand(mainViewModel.OpenExisttingFile);
+            SaveFileCommand = new RelayCommand<TabItemExtended>(mainViewModel.SaveFile, CanExecuteFileCommand);
+            SaveFileAsCommand = new RelayCommand<TabItemExtended>(mainViewModel.SaveFileAs, CanExecuteFileCommand);
         }
 
-
+        private bool CanExecuteFileCommand(object parameter) => parameter is TabItemExtended;
     }
 }

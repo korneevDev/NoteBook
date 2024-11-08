@@ -1,16 +1,15 @@
-﻿using NoteBookUI;
-
+﻿
 namespace NoteBookLib
 {
     public class FileManager
     {
-        private readonly Dictionary<string, IFileBuilder> _fileBuilders;
+        private readonly Dictionary<string, IFileHandler> _fileHandlers;
 
         public FileManager()
         {
-            _fileBuilders = new Dictionary<string, IFileBuilder> {
-                { ".txt", new TextDocumentBuilder() },
-                { "", new NewTextDocumentBuilder() },
+            _fileHandlers = new Dictionary<string, IFileHandler> {
+                { ".txt", new TextDocumentHandler() },
+                { "", new NewTextDocumentHandler() },
             };
         }
 
@@ -19,7 +18,23 @@ namespace NoteBookLib
 
             string extension = Path.GetExtension(filePath).ToLower();
 
-            return _fileBuilders[extension].MakeDocument(filePath);
+            return _fileHandlers[extension].MakeDocument(filePath);
+
+        }
+
+        public void SaveFile(string filePath, IDocument document)
+        {
+            string extension = Path.GetExtension(filePath).ToLower();
+
+            document.Save(filePath, _fileHandlers[extension]);
+
+        }
+
+        public void SaveFile(IDocument document)
+        {
+            string extension = document.GetExtension();
+
+            document.Save(_fileHandlers[extension]);
 
         }
 
