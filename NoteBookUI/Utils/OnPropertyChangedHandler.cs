@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace TextEditorApp.ViewModels
+namespace NoteBookUI
 {
     public class OnPropertyChangedHandler : INotifyPropertyChanged
     {
