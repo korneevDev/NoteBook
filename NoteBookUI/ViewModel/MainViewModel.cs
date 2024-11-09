@@ -2,22 +2,31 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using NoteBookLib;
-
+using NoteBookUI.Utils;
 
 namespace NoteBookUI.View
 {
     public class MainViewModel : OnPropertyChangedHandler
     {
 
-        private ObservableCollection<TabItemExtended> _tabs;
+        private readonly ObservableCollection<TabItemExtended> _tabs;
 
         public MainViewModel()
         {
             _tabs = [];
+            App.LanguageChanged += UpdateTabTitles;
+        }
+
+        private void UpdateTabTitles()
+        {
+            foreach (var tab in _tabs)
+            {
+                tab.UpdateTitle();
+            }
 
         }
 
-        public ObservableCollection<TabItemExtended> getTabsList() => _tabs;
+        public ObservableCollection<TabItemExtended> GetTabsList() => _tabs;
 
         public void CreateNewTab()
         {
@@ -35,8 +44,8 @@ namespace NoteBookUI.View
             if (!tab.CanRemoveTab())
             {
                 var result = MessageBox.Show(
-                        "You have unsaved changes. Do you really want to close this tab?",
-                        "Unsaved Changes",
+                        StringResourceManager.GetString("UnsavedChangesMessage"),
+                        StringResourceManager.GetString("UnsavedChangesLabel"),
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Warning);
 
@@ -53,8 +62,10 @@ namespace NoteBookUI.View
         public void OpenExisttingFile()
         {
             // Создаем диалог открытия файла
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf|All Files (*.*)|*.*";
+            OpenFileDialog openFileDialog = new()
+            {
+                Filter = "Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf|All Files (*.*)|*.*"
+            };
 
             if (openFileDialog.ShowDialog() == true)
             {
@@ -74,7 +85,7 @@ namespace NoteBookUI.View
             if (tab == null)
                 return;
 
-            if (tab.isNewFile())
+            if (tab.IsNewFile())
             {
                 SaveFileAs(tab);
                 return;
@@ -88,8 +99,11 @@ namespace NoteBookUI.View
             if (tab == null)
                 return;
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf";
+            SaveFileDialog saveFileDialog = new()
+            {
+                FileName = tab.TitleForSaveDialog(),
+                Filter = "Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf"
+            };
 
             if (saveFileDialog.ShowDialog() == true)
             {
@@ -97,6 +111,12 @@ namespace NoteBookUI.View
                 
                 tab.Save(filePath);
             }
+        }
+
+        public void OpenSettings()
+        {
+            SettingsWindow settingsWindow = new();
+            settingsWindow.ShowDialog();
         }
     }
 }

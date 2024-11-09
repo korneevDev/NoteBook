@@ -2,7 +2,7 @@
 {
     public interface IDocument
     {
-        public string Title();
+        public string Title(string defaultValue);
         public bool CanBeRemoved();
 
         public void SetNewContent(string content);
@@ -48,7 +48,7 @@
             this._isModified = true;
         }
 
-        public string Title() => (string.IsNullOrEmpty(_filePath) ? "New_document" : Path.GetFileName(_filePath)) + 
+        public string Title(string defaultValue) => (string.IsNullOrEmpty(_filePath) ? defaultValue : Path.GetFileName(_filePath)) + 
             (_isModified ? " *" : "");
 
         public bool CanBeRemoved() => !_isModified;

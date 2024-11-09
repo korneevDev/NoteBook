@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Documents;
 using NoteBookLib;
+using NoteBookUI.Utils;
 
 namespace NoteBookUI.View
 {
@@ -8,18 +9,29 @@ namespace NoteBookUI.View
     public class TabItemExtended : OnPropertyChangedHandler
     {
 
-        private TextEditor _tabTextEditor { get; }
+        private readonly TextEditor tabTextEditor;
 
         public RichTextBox RichTextBox { get; }
 
         public string Title
         {
-            get => _tabTextEditor.UpdateTitle();
+            get => tabTextEditor.UpdateTitle(StringResourceManager.GetString("NewFileTitle"));
+        }
+
+        public string TitleForSaveDialog()
+        {
+            var title = Title;
+            if (title.EndsWith(" *"))
+            {
+                return title.TrimEnd('*').TrimEnd(' ');
+            }
+
+            return title;
         }
 
         public TabItemExtended(TextEditor tabViewModel)
         {
-            _tabTextEditor = tabViewModel;
+            tabTextEditor = tabViewModel;
             RichTextBox = new RichTextBox();
             tabViewModel.ShowFile(new ExtendedRichTextBox(RichTextBox));
             RichTextBox.TextChanged += RichTextBox_TextChanged;
@@ -32,23 +44,28 @@ namespace NoteBookUI.View
                                                     RichTextBox.Document.ContentEnd);
             string currentText = textRange.Text;
 
-            _tabTextEditor.CommitTextChange(currentText);
+            tabTextEditor.CommitTextChange(currentText);
             OnPropertyChanged(nameof(Title));
         }
 
-        public bool isNewFile() => _tabTextEditor.IsNewFile();
+        public bool IsNewFile() => tabTextEditor.IsNewFile();
 
-        public bool CanRemoveTab() => _tabTextEditor.CanRemove();
+        public bool CanRemoveTab() => tabTextEditor.CanRemove();
 
         public void Save()
         {
-            _tabTextEditor.SaveFile();
+            tabTextEditor.SaveFile();
+            OnPropertyChanged(nameof(Title));
+        }
+
+        public void UpdateTitle() 
+        {
             OnPropertyChanged(nameof(Title));
         }
 
         public void Save(string fileName)
         {
-            _tabTextEditor.SaveFile(fileName);
+            tabTextEditor.SaveFile(fileName);
             OnPropertyChanged(nameof(Title));
         }
 

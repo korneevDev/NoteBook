@@ -8,7 +8,7 @@ namespace NoteBookUI.View
     {
 
         private readonly MainViewModel mainViewModel;
-        public ObservableCollection<TabItemExtended> Tabs => mainViewModel.getTabsList();
+        public ObservableCollection<TabItemExtended> Tabs => mainViewModel.GetTabsList();
         
 
         public ICommand NewTabCommand { get; }
@@ -20,6 +20,8 @@ namespace NoteBookUI.View
 
         public ICommand SaveFileAsCommand { get; }
 
+        public ICommand OpenSettings {  get; }
+
         public MainViewComandManager()
         {
             mainViewModel = new MainViewModel();
@@ -29,6 +31,8 @@ namespace NoteBookUI.View
             OpenFileCommand = new RelayCommand(mainViewModel.OpenExisttingFile);
             SaveFileCommand = new RelayCommand<TabItemExtended>(mainViewModel.SaveFile, CanExecuteFileCommand);
             SaveFileAsCommand = new RelayCommand<TabItemExtended>(mainViewModel.SaveFileAs, CanExecuteFileCommand);
+            OpenSettings = new RelayCommand(mainViewModel.OpenSettings);
+
         }
 
         private bool CanExecuteFileCommand(object parameter) => parameter is TabItemExtended;

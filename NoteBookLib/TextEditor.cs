@@ -45,7 +45,7 @@
 
         public bool IsNewFile() => _document.IsNewFile();
 
-        public string UpdateTitle() => _document.Title();
+        public string UpdateTitle(string defaultValue) => _document.Title(defaultValue);
 
         public void CommitTextChange(string text)
         {

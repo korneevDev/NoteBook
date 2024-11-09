@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="Title">Text Editor</sys:String>
+    <sys:String x:Key="Settings">Settings</sys:String>
+    <sys:String x:Key="Apply">Apply</sys:String>
+    <sys:String x:Key="SelectLanguage">Choose language</sys:String>
+    <sys:String x:Key="NewTab">New file</sys:String>
+    <sys:String x:Key="OpenFile">Open</sys:String>
+    <sys:String x:Key="Save">Save</sys:String>
+    <sys:String x:Key="SaveAs">Save as</sys:String>
+    <sys:String x:Key="NewFileTitle">New document</sys:String>
+    <sys:String x:Key="UnsavedChangesMessage">You have unsaved changes. Do you really want to close this tab?</sys:String>
+    <sys:String x:Key="UnsavedChangesLabel">Unsaved changes</sys:String>
+
+</ResourceDictionary>

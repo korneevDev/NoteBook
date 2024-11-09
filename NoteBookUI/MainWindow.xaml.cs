@@ -12,7 +12,7 @@ namespace NoteBookUI
         public MainWindow()
         {
             InitializeComponent();
-
+            ((App)Application.Current).ChangeCulture();
         }
     }
 }
