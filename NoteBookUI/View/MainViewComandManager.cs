@@ -22,6 +22,10 @@ namespace NoteBookUI.View
 
         public ICommand OpenSettings {  get; }
 
+        public ICommand CopyCommand { get; }
+        public ICommand InsertCommand { get; }
+        public ICommand CutCommand { get; }
+
         public MainViewComandManager()
         {
             mainViewModel = new MainViewModel();
@@ -32,6 +36,10 @@ namespace NoteBookUI.View
             SaveFileCommand = new RelayCommand<TabItemExtended>(mainViewModel.SaveFile, CanExecuteFileCommand);
             SaveFileAsCommand = new RelayCommand<TabItemExtended>(mainViewModel.SaveFileAs, CanExecuteFileCommand);
             OpenSettings = new RelayCommand(mainViewModel.OpenSettings);
+
+            CopyCommand = new RelayCommand<TabItemExtended>(mainViewModel.Copy);
+            CutCommand = new RelayCommand<TabItemExtended>(mainViewModel.Cut);
+            InsertCommand = new RelayCommand<TabItemExtended>(mainViewModel.Insert);
 
         }
 

@@ -10,10 +10,12 @@ namespace NoteBookUI.View
     {
 
         private readonly ObservableCollection<TabItemExtended> _tabs;
+        private readonly ClipboardManager _clipboardManager;
 
         public MainViewModel()
         {
             _tabs = [];
+            _clipboardManager = new ClipboardManager();
             App.LanguageChanged += UpdateTabTitles;
         }
 
@@ -30,7 +32,7 @@ namespace NoteBookUI.View
 
         public void CreateNewTab()
         {
-            var tabTextEditor = new TextEditor();
+            var tabTextEditor = new TextEditor(_clipboardManager);
             tabTextEditor.CreateFile();
             var newTab = new TabItemExtended(tabTextEditor);
             _tabs.Add(newTab);
@@ -70,7 +72,7 @@ namespace NoteBookUI.View
             if (openFileDialog.ShowDialog() == true)
             {
 
-                var newTabViewModel = new TextEditor();
+                var newTabViewModel = new TextEditor(_clipboardManager);
 
                 newTabViewModel.LoadFile(openFileDialog.FileName);
 
@@ -117,6 +119,22 @@ namespace NoteBookUI.View
         {
             SettingsWindow settingsWindow = new();
             settingsWindow.ShowDialog();
+        }
+
+        public void Copy(TabItemExtended tab)
+        {
+            tab.Copy(tab.RichTextBox.Selection.Text);
+        }
+
+        public void Cut(TabItemExtended tab)
+        {
+            tab.Copy(tab.RichTextBox.Selection.Text);
+            tab.RichTextBox.Selection.Text = "";
+        }
+
+        public void Insert(TabItemExtended tab)
+        {
+            tab.RichTextBox.CaretPosition.InsertTextInRun(tab.GetTextFromBuffer());
         }
     }
 }

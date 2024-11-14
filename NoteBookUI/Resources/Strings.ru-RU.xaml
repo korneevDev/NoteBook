@@ -12,5 +12,8 @@
     <sys:String x:Key="NewFileTitle">Новый документ</sys:String>
     <sys:String x:Key="UnsavedChangesMessage">В документе присутствуют несохранённые изменения. Вы хотите закрыть вкладку?</sys:String>
     <sys:String x:Key="UnsavedChangesLabel">Несохранённые изменения</sys:String>
-    
+    <sys:String x:Key="Copy">Копировать</sys:String>
+    <sys:String x:Key="Insert">Вставить</sys:String>
+    <sys:String x:Key="Cut">Вырезать</sys:String>
+
 </ResourceDictionary>

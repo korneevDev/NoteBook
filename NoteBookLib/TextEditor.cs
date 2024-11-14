@@ -5,10 +5,13 @@
 
         private IDocument _document;
         private readonly FileManager _fileManager;
+        private readonly ClipboardManager _clipboardManager;
 
-        public TextEditor()
+
+        public TextEditor(ClipboardManager clipboardManager)
         {
             _fileManager = new FileManager();
+            _clipboardManager = clipboardManager;
         }
 
         public TextEditor(IDocument document)
@@ -53,6 +56,13 @@
         }
 
         public bool CanRemove() => _document.CanBeRemoved();
+
+        public void CopyText(string text)
+        {
+            _clipboardManager.Copy(text);
+        }
+
+        public string GetTextFromBuffer() => _clipboardManager.GetBuffer();
 
     }
 }

@@ -19,7 +19,20 @@
             <Button Content="{DynamicResource SaveAs}"  
                     Command="{Binding SaveFileAsCommand}"
                     CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
-            <Button Content="{DynamicResource Settings}" Command="{Binding OpenSettings}" />
+            <Button Content="{DynamicResource Settings}" 
+                    Command="{Binding OpenSettings}"/>
+
+            <Button Content="{DynamicResource Copy}"  
+                    Command="{Binding CopyCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
+
+            <Button Content="{DynamicResource Cut}"  
+                    Command="{Binding CutCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
+
+            <Button Content="{DynamicResource Insert}"  
+                    Command="{Binding InsertCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
         </ToolBar>
 
         <TabControl x:Name="TabControl" ItemsSource="{Binding Tabs}" SelectedIndex="0" >

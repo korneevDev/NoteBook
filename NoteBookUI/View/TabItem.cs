@@ -69,6 +69,15 @@ namespace NoteBookUI.View
             OnPropertyChanged(nameof(Title));
         }
 
+        public void Copy(string text)
+        {
+            tabTextEditor.CopyText(text);
+        }
+
+        public string GetTextFromBuffer() =>
+            tabTextEditor.GetTextFromBuffer();
+        
+
     }
 
     public class ExtendedRichTextBox : ITextBox
