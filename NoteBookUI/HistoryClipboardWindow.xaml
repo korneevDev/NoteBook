@@ -1,0 +1,19 @@
+﻿<Window x:Class="NoteBookUI.HistoryClipboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource Clipboard}" Height="300" Width="400">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl Name="historyItemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="{Binding}" FontSize="14" Width="250" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                            <Button Content="{DynamicResource Copy}" Width="75" Margin="10,0,0,0" Click="CopyFromHistory_Click"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Window>

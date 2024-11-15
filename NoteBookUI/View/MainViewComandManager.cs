@@ -26,6 +26,8 @@ namespace NoteBookUI.View
         public ICommand InsertCommand { get; }
         public ICommand CutCommand { get; }
 
+        public ICommand OpenHistoryCommand { get; }
+
         public MainViewComandManager()
         {
             mainViewModel = new MainViewModel();
@@ -40,6 +42,8 @@ namespace NoteBookUI.View
             CopyCommand = new RelayCommand<TabItemExtended>(mainViewModel.Copy);
             CutCommand = new RelayCommand<TabItemExtended>(mainViewModel.Cut);
             InsertCommand = new RelayCommand<TabItemExtended>(mainViewModel.Insert);
+
+            OpenHistoryCommand = new RelayCommand(mainViewModel.OpenClipboardHistory);
 
         }
 

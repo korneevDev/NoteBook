@@ -1,4 +1,6 @@
-﻿namespace NoteBookLib
+﻿using System.Xml.Linq;
+
+namespace NoteBookLib
 {
     public class ClipboardManager
     {
@@ -14,9 +16,17 @@
             _buffer.Add(text);
         }
 
-        public string GetBuffer()
+        public string GetLastValueFromBuffer()
         {
             return _buffer[^1];
+        }
+
+        public List<string> GetBuffer() => _buffer;
+
+        public void SetOldValueToBufferTop(int index)
+        {
+            _buffer.Add(_buffer[index]);
+            _buffer.RemoveAt(index);
         }
 
     }

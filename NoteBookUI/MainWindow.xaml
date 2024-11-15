@@ -33,6 +33,10 @@
             <Button Content="{DynamicResource Insert}"  
                     Command="{Binding InsertCommand}"
                     CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
+
+            <Button Content="{DynamicResource Clipboard}"  
+                    Command="{Binding OpenHistoryCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
         </ToolBar>
 
         <TabControl x:Name="TabControl" ItemsSource="{Binding Tabs}" SelectedIndex="0" >

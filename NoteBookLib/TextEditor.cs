@@ -62,7 +62,7 @@
             _clipboardManager.Copy(text);
         }
 
-        public string GetTextFromBuffer() => _clipboardManager.GetBuffer();
+        public string GetTextFromBuffer() => _clipboardManager.GetLastValueFromBuffer();
 
     }
 }

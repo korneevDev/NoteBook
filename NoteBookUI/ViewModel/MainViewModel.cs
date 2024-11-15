@@ -121,6 +121,12 @@ namespace NoteBookUI.View
             settingsWindow.ShowDialog();
         }
 
+        public void OpenClipboardHistory()
+        {
+            HistoryClipboardWindow historyWindow = new(_clipboardManager);
+            historyWindow.ShowDialog();
+        }
+
         public void Copy(TabItemExtended tab)
         {
             tab.Copy(tab.RichTextBox.Selection.Text);
@@ -136,5 +142,7 @@ namespace NoteBookUI.View
         {
             tab.RichTextBox.CaretPosition.InsertTextInRun(tab.GetTextFromBuffer());
         }
+
+
     }
 }

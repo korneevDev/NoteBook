@@ -15,5 +15,6 @@
     <sys:String x:Key="Copy">Копировать</sys:String>
     <sys:String x:Key="Insert">Вставить</sys:String>
     <sys:String x:Key="Cut">Вырезать</sys:String>
-
+    <sys:String x:Key="Clipboard">Буфер обмена</sys:String>
+    
 </ResourceDictionary>
