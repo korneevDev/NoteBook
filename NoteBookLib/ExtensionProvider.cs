@@ -17,7 +17,7 @@
             };
 
 
-public Dictionary<string, IFileHandler> getBuildersDictionary() =>_dictionary;
+        public Dictionary<string, IFileHandler> getBuildersDictionary() =>_dictionary;
 
         public string GetExtensionsTemplate()
         {

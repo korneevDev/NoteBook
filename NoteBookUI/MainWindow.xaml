@@ -37,6 +37,17 @@
             <Button Content="{DynamicResource Clipboard}"  
                     Command="{Binding OpenHistoryCommand}"
                     CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
+
+            <Button Content="{DynamicResource Print}"  
+                    Command="{Binding PrintCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
+
+            <Button Content="{DynamicResource Undo}"  
+                    Command="{Binding UndoCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
+            <Button Content="{DynamicResource Redo}"  
+                    Command="{Binding RedoCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
         </ToolBar>
 
         <TabControl x:Name="TabControl" ItemsSource="{Binding Tabs}" SelectedIndex="0" >

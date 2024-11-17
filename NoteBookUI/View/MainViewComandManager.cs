@@ -27,6 +27,11 @@ namespace NoteBookUI.View
         public ICommand CutCommand { get; }
 
         public ICommand OpenHistoryCommand { get; }
+        public ICommand PrintCommand { get; }
+
+        public ICommand UndoCommand { get; }
+
+        public ICommand RedoCommand { get; }
 
         public MainViewComandManager()
         {
@@ -39,12 +44,16 @@ namespace NoteBookUI.View
             SaveFileAsCommand = new RelayCommand<TabItemExtended>(mainViewModel.SaveFileAs, CanExecuteFileCommand);
             OpenSettings = new RelayCommand(mainViewModel.OpenSettings);
 
-            CopyCommand = new RelayCommand<TabItemExtended>(mainViewModel.Copy);
-            CutCommand = new RelayCommand<TabItemExtended>(mainViewModel.Cut);
-            InsertCommand = new RelayCommand<TabItemExtended>(mainViewModel.Insert);
+            CopyCommand = new RelayCommand<TabItemExtended>(mainViewModel.Copy, CanExecuteFileCommand);
+            CutCommand = new RelayCommand<TabItemExtended>(mainViewModel.Cut, CanExecuteFileCommand);
+            InsertCommand = new RelayCommand<TabItemExtended>(mainViewModel.Insert, CanExecuteFileCommand);
 
             OpenHistoryCommand = new RelayCommand(mainViewModel.OpenClipboardHistory);
 
+            PrintCommand = new RelayCommand<TabItemExtended>(mainViewModel.PrintDocument, CanExecuteFileCommand);
+
+            UndoCommand = new RelayCommand<TabItemExtended>(mainViewModel.Undo, mainViewModel.isUndoAvailable);
+            RedoCommand = new RelayCommand<TabItemExtended>(mainViewModel.Redo, mainViewModel.isRedoAvailable);
         }
 
         private bool CanExecuteFileCommand(object parameter) => parameter is TabItemExtended;

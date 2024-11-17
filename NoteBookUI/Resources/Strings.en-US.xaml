@@ -16,5 +16,8 @@
     <sys:String x:Key="Insert">Insert</sys:String>
     <sys:String x:Key="Cut">Cut</sys:String>
     <sys:String x:Key="Clipboard">Clipboard</sys:String>
+    <sys:String x:Key="Print">Print</sys:String>
+    <sys:String x:Key="Undo">Undo</sys:String>
+    <sys:String x:Key="Redo">Redo</sys:String>
 
 </ResourceDictionary>

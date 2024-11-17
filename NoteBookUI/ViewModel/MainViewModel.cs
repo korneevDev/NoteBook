@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using NoteBookLib;
 using NoteBookUI.Utils;
+using System.Windows.Controls;
 
 namespace NoteBookUI.View
 {
@@ -84,22 +85,31 @@ namespace NoteBookUI.View
 
         public void SaveFile(TabItemExtended tab)
         {
+            SaveFile(tab, true);
+        }
+        private bool SaveFile(TabItemExtended tab, bool isReturned)
+        {
             if (tab == null)
-                return;
+                return false;
 
             if (tab.IsNewFile())
             {
-                SaveFileAs(tab);
-                return;
+                return SaveFileAs(tab, true);
             }
 
             tab.Save();
+            return true;
         }
 
         public void SaveFileAs(TabItemExtended tab)
         {
+            SaveFileAs(tab, true);
+        }
+
+        private bool SaveFileAs(TabItemExtended tab, bool isReturned)
+        {
             if (tab == null)
-                return;
+                return false;
 
             SaveFileDialog saveFileDialog = new()
             {
@@ -112,7 +122,10 @@ namespace NoteBookUI.View
                 string filePath = saveFileDialog.FileName;
                 
                 tab.Save(filePath);
+                return true;
             }
+
+            return false;
         }
 
         public void OpenSettings()
@@ -143,6 +156,39 @@ namespace NoteBookUI.View
             tab.RichTextBox.CaretPosition.InsertTextInRun(tab.GetTextFromBuffer());
         }
 
+        public void PrintDocument(TabItemExtended tab)
+        {
+
+            if (SaveFile(tab, true))
+            {
+                // Создаем диалоговое окно печати
+                PrintDialog printDialog = new();
+
+                PrintWindow previewWindow = new PrintWindow(tab.Document());
+                previewWindow.ShowDialog();
+            }
+            
+        }
+
+        public void Undo(TabItemExtended tab)
+        {
+
+            tab.Undo();
+
+        }
+
+        public void Redo(TabItemExtended tab)
+        {
+
+            tab.Redo();
+
+        }
+
+        public bool isRedoAvailable(object parameter) => 
+            parameter is TabItemExtended extended && extended.IsRedoAvailable();
+
+        public bool isUndoAvailable(object parameter) =>
+            parameter is TabItemExtended extended && extended.IsUndoAvailable();
 
     }
 }

@@ -15,6 +15,12 @@
         public string GetExtension();
 
         public bool IsNewFile();
+        public string Text();
+
+        public IDocumentChange? CalculateChange(string currentText);
+
+        public void AddText(int startIndex, string newText);
+        public void RemoveText(int startIndex, string removedText);
     }
 
     public interface ITextBox
@@ -55,7 +61,7 @@
 
         public void Show(ITextBox textBox)
         {
-            textBox.ShowString(this._content);
+            textBox.ShowString(_content);
         }
 
         public void Save(IFileHandler fileHandler)
@@ -74,5 +80,76 @@
         public string GetExtension() => ".txt";
 
         public bool IsNewFile() => string.IsNullOrEmpty(_filePath);
+
+        public string Text() => _content;
+
+        public IDocumentChange? CalculateChange(string newText)
+        {
+            string oldText = _content;
+
+            if (oldText == newText)
+            {
+                return null;
+            }
+
+            if (oldText.Length > newText.Length)
+            {
+                return CalculateRemoveTextChange(oldText, newText);
+            }
+
+            return CalculateAddTextChange(oldText,newText);
+
+        }
+
+        private IDocumentChange CalculateRemoveTextChange(string oldText, string newText)
+        {
+            int startIndex = oldText.Zip(newText, (o, n) => o == n).TakeWhile(equal => equal).Count();
+
+            var removedText = oldText.Substring(startIndex, oldText.Length - startIndex);
+            newText = newText.Substring(startIndex, newText.Length - startIndex);
+
+            int commonSuffixLength =
+                newText.Reverse().Zip(removedText.Reverse(), (o, n) => o == n).TakeWhile(equal => equal).Count();
+
+            removedText = removedText.Substring(0, removedText.Length-commonSuffixLength);
+
+            return new RemoveTextChange(startIndex, removedText);
+        }
+
+        private IDocumentChange CalculateAddTextChange(string oldText, string newText)
+        {
+            
+            int startIndex = oldText.Zip(newText, (o, n) => o == n).TakeWhile(equal => equal).Count();
+
+            var addedText = newText.Substring(startIndex, newText.Length-startIndex);
+            oldText = oldText.Substring(startIndex, oldText.Length-startIndex);
+            int commonSuffixLength =
+                oldText.Reverse().Zip(addedText.Reverse(), (o, n) => o == n).TakeWhile(equal => equal).Count();
+
+            addedText = addedText.Substring(0, addedText.Length-commonSuffixLength);
+
+            return new AddTextChange(startIndex, addedText);
+        }
+
+        public void AddText(int startIndex, string newText)
+        {
+            var prefix = _content.Substring(0, Math.Min(_content.Length, startIndex));
+            var suffix = "";
+            if (startIndex < _content.Length)
+            {
+                suffix = _content.Substring(startIndex + 1);
+            }
+            _content = prefix + newText + suffix;
+        }
+
+        public void RemoveText(int startIndex, string removedText)
+        {
+            if (startIndex >= _content.Length)
+            {
+                startIndex = startIndex - removedText.Length;
+            }
+
+            _content = _content.Remove(startIndex, Math.Min(_content.Length, removedText.Length));
+        }
     }
 }

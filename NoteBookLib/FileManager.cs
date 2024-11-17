@@ -3,14 +3,11 @@ namespace NoteBookLib
 {
     public class FileManager
     {
-        private readonly Dictionary<string, IFileHandler> _fileHandlers;
+        private readonly IExtensionProvider extensionProvider;
 
         public FileManager()
         {
-            _fileHandlers = new Dictionary<string, IFileHandler> {
-                { ".txt", new TextDocumentHandler() },
-                { "", new NewTextDocumentHandler() },
-            };
+            extensionProvider = new BaseExtensionProvider();
         }
 
         public IDocument LoadFile(string filePath)
@@ -18,7 +15,7 @@ namespace NoteBookLib
 
             string extension = Path.GetExtension(filePath).ToLower();
 
-            return _fileHandlers[extension].MakeDocument(filePath);
+            return extensionProvider.getBuildersDictionary()[extension].MakeDocument(filePath);
 
         }
 
@@ -26,7 +23,7 @@ namespace NoteBookLib
         {
             string extension = Path.GetExtension(filePath).ToLower();
 
-            document.Save(filePath, _fileHandlers[extension]);
+            document.Save(filePath, extensionProvider.getBuildersDictionary()[extension]);
 
         }
 
@@ -34,7 +31,7 @@ namespace NoteBookLib
         {
             string extension = document.GetExtension();
 
-            document.Save(_fileHandlers[extension]);
+            document.Save(extensionProvider.getBuildersDictionary()[extension]);
 
         }
 
