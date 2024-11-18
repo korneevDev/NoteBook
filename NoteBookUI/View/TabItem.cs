@@ -1,5 +1,10 @@
-﻿using System.Windows.Controls;
+﻿using System.Drawing;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 using NoteBookLib;
 using NoteBookUI.Utils;
 
@@ -46,6 +51,7 @@ namespace NoteBookUI.View
                                                     RichTextBox.Document.ContentEnd);
             string currentText = textRange.Text;
 
+            currentText = currentText.Replace("\r\n", "\n");
             tabTextEditor.CommitTextChange(currentText);
             OnPropertyChanged(nameof(Title));
         }
@@ -83,22 +89,18 @@ namespace NoteBookUI.View
         
         public void Undo()
         {
-            //var caretPosition = GetCaretIndex();
             tabTextEditor.Undo();
             RichTextBox.TextChanged -= RichTextBox_TextChanged;
             tabTextEditor.ShowFile(new ExtendedRichTextBox(RichTextBox));
             RichTextBox.TextChanged += RichTextBox_TextChanged;
-           // SetCaretIndex(caretPosition);
         }
 
         public void Redo()
         {
-          //  var caretPosition = GetCaretIndex();
             tabTextEditor.Redo();
             RichTextBox.TextChanged -= RichTextBox_TextChanged;
             tabTextEditor.ShowFile(new ExtendedRichTextBox(RichTextBox));
             RichTextBox.TextChanged += RichTextBox_TextChanged;
-            //   SetCaretIndex(caretPosition);
         }
 
         public bool IsRedoAvailable()
@@ -111,48 +113,80 @@ namespace NoteBookUI.View
             return tabTextEditor.IsUndoAvailable();
         }
 
-        private int GetCaretIndex()
+        public void FindNextString(string text)
         {
-            // Получаем текущую позицию курсора
-            TextPointer caretPosition = RichTextBox.CaretPosition;
+            int index = tabTextEditor.FindText(text);
 
-            // Вычисляем индекс относительно начала текста
-            return new TextRange(RichTextBox.Document.ContentStart, caretPosition).Text.Length;
+            if (index > -1)
+                SelectText(RichTextBox, index, index + text.Length);
         }
 
-        private void SetCaretIndex(int position)
+        public void FindAndReplaceString(string sourceText, string textToReplace)
         {
-            // Получаем начальную позицию текста
-            TextPointer start = RichTextBox.Document.ContentStart;
+            tabTextEditor.ReplaceText(sourceText, textToReplace);
+            tabTextEditor.ShowFile(new ExtendedRichTextBox(RichTextBox));
+        }
 
-            // Перемещаем TextPointer на нужный индекс
-            TextPointer targetPosition = GetTextPointerAtOffset(start, position);
+        public void ReplaceString(string sourceText, string textToReplace)
+        {
+            tabTextEditor.ReplaceAllText(sourceText, textToReplace);
+            tabTextEditor.ShowFile(new ExtendedRichTextBox(RichTextBox));
+        }
 
-            if (targetPosition != null)
+        public void SelectText(RichTextBox editor, int startIndex, int endIndex)
+        {
+            if (editor == null || startIndex < 0 || endIndex < startIndex)
+                throw new ArgumentException("Invalid indices or editor.");
+
+            // Получаем весь текст документа, включая символы переноса строк
+            string fullText = new TextRange(editor.Document.ContentStart, editor.Document.ContentEnd).Text;
+
+
+            // Проверяем корректность индексов
+            if (startIndex >= fullText.Length || endIndex > fullText.Length)
+                throw new ArgumentOutOfRangeException("Indices are out of range.");
+
+            // Находим начальный и конечный TextPointer
+            TextPointer startPointer = GetTextPointerAtOffset(editor.Document.ContentStart, fullText, startIndex);
+            TextPointer endPointer = GetTextPointerAtOffset(editor.Document.ContentStart, fullText, endIndex);
+
+            if (startPointer != null && endPointer != null)
             {
-                // Устанавливаем курсор
-                RichTextBox.CaretPosition = targetPosition;
-
-                // Прокручиваем к позиции курсора
-                RichTextBox.Focus(); // Убеждаемся, что RichTextBox в фокусе
+                // Выделяем текст
+                editor.Selection.Select(startPointer, endPointer);
+                editor.Focus();
             }
         }
 
-        // Вспомогательный метод: Получение TextPointer на основе смещения
-        private TextPointer GetTextPointerAtOffset(TextPointer start, int offset)
+        // Метод для преобразования текстового индекса в TextPointer
+        private TextPointer GetTextPointerAtOffset(TextPointer start, string fullText, int offset)
         {
             TextPointer current = start;
-            int count = 0;
+            int textOffset = 0;
 
-            while (current != null && count < offset)
+            // Итерируемся по TextPointer и сравниваем с фактическим текстом
+            while (current != null && textOffset < offset)
             {
-                // Перемещаем указатель вперед на один символ
+                if (GetCharacterAtPointer(current) != null)
+                {
+                    textOffset++;
+                }
                 current = current.GetPositionAtOffset(1, LogicalDirection.Forward);
-                count++;
             }
 
             return current;
         }
+
+        // Получение символа в текущей позиции TextPointer
+        private char? GetCharacterAtPointer(TextPointer pointer)
+        {
+            if (pointer == null) return null;
+
+            // Извлекаем текст из текущей позиции
+            var range = new TextRange(pointer, pointer.GetPositionAtOffset(1, LogicalDirection.Forward));
+            return string.IsNullOrEmpty(range.Text) ? null : range.Text[0];
+        }
+
     }
 
     public class ExtendedRichTextBox : ITextBox

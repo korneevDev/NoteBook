@@ -130,13 +130,19 @@ namespace NoteBookUI.View
 
         public void OpenSettings()
         {
-            SettingsWindow settingsWindow = new();
+            SettingsWindow settingsWindow = new()
+            {
+                Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+            };
             settingsWindow.ShowDialog();
         }
 
         public void OpenClipboardHistory()
         {
-            HistoryClipboardWindow historyWindow = new(_clipboardManager);
+            HistoryClipboardWindow historyWindow = new(_clipboardManager)
+            {
+                Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+            };
             historyWindow.ShowDialog();
         }
 
@@ -164,7 +170,10 @@ namespace NoteBookUI.View
                 // Создаем диалоговое окно печати
                 PrintDialog printDialog = new();
 
-                PrintWindow previewWindow = new PrintWindow(tab.Document());
+                PrintWindow previewWindow = new(tab.Document())
+                {
+                    Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+                };
                 previewWindow.ShowDialog();
             }
             
@@ -190,5 +199,15 @@ namespace NoteBookUI.View
         public bool isUndoAvailable(object parameter) =>
             parameter is TabItemExtended extended && extended.IsUndoAvailable();
 
+
+        public void FindAndReplace(TabItemExtended tab)
+        {
+            var findWindow = new SearchWindow(tab)
+            {
+                Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+            };
+
+            findWindow.Show();
+        }
     }
 }

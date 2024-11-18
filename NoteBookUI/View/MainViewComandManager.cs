@@ -33,6 +33,8 @@ namespace NoteBookUI.View
 
         public ICommand RedoCommand { get; }
 
+        public ICommand FindCommand { get; }
+
         public MainViewComandManager()
         {
             mainViewModel = new MainViewModel();
@@ -54,6 +56,8 @@ namespace NoteBookUI.View
 
             UndoCommand = new RelayCommand<TabItemExtended>(mainViewModel.Undo, mainViewModel.isUndoAvailable);
             RedoCommand = new RelayCommand<TabItemExtended>(mainViewModel.Redo, mainViewModel.isRedoAvailable);
+
+            FindCommand = new RelayCommand<TabItemExtended>(mainViewModel.FindAndReplace, CanExecuteFileCommand);
         }
 
         private bool CanExecuteFileCommand(object parameter) => parameter is TabItemExtended;

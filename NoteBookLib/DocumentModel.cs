@@ -21,6 +21,12 @@
 
         public void AddText(int startIndex, string newText);
         public void RemoveText(int startIndex, string removedText);
+
+        public int FindSubstringIndexes(string text, int index);
+
+        public void ReplaceText(string text, string newText);
+
+        public void ReplaceText(string text, string newText, int index);
     }
 
     public interface ITextBox
@@ -28,20 +34,20 @@
         public void ShowString(string str);
     }
 
-    public class TextDocumentModel : IDocument
+    public class DocumentModel : IDocument
     { 
         public string _filePath;
         private string _content;
         private bool _isModified;
 
-        public TextDocumentModel()
+        public DocumentModel()
         {
             this._filePath = "";
             this._content = "";
             this._isModified = false;
         }
 
-        public TextDocumentModel(string filePath, string content)
+        public DocumentModel(string filePath, string content)
         {
             this._filePath = filePath;
             this._content = content;
@@ -149,7 +155,27 @@
                 startIndex = startIndex - removedText.Length;
             }
 
-            _content = _content.Remove(startIndex, Math.Min(_content.Length, removedText.Length));
+            _content = _content.Remove(startIndex, Math.Min(_content.Length, Math.Min(removedText.Length, _content.Length - startIndex)));
+        }
+
+        public int FindSubstringIndexes(string text, int index)
+        {
+            return _content.IndexOf(text, index, StringComparison.Ordinal);
+        }
+
+        public void ReplaceText(string text, string newText)
+        {
+            _content = _content.Replace(text, newText);
+        }
+
+        public void ReplaceText(string text, string newText, int index)
+        {
+            // Разбиваем строку на три части: до, заменяемый участок, после
+            string before = _content.Substring(0, index);
+            string after = _content.Substring(index + text.Length);
+
+            // Склеиваем с заменой
+            _content = before + newText + after;
         }
     }
 }

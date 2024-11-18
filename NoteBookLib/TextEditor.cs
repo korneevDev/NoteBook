@@ -8,6 +8,7 @@ namespace NoteBookLib
         private readonly FileManager _fileManager;
         private readonly ClipboardManager _clipboardManager;
         private readonly UndoRedoManager _undoRedoManager;
+        private readonly FindAndReplaceManager _findAndReplaceManager;
 
 
         public TextEditor(ClipboardManager clipboardManager)
@@ -15,6 +16,7 @@ namespace NoteBookLib
             _fileManager = new FileManager();
             _clipboardManager = clipboardManager;
             _undoRedoManager = new UndoRedoManager();
+            _findAndReplaceManager = new FindAndReplaceManager();
         }
 
         public TextEditor(IDocument document)
@@ -60,6 +62,7 @@ namespace NoteBookLib
             IDocumentChange change = _document.CalculateChange(text);
             _undoRedoManager.AddUndo(change);
             _document.SetNewContent(text);
+            _findAndReplaceManager.ClearCounter();
         }
 
         public bool CanRemove() => _document.CanBeRemoved();
@@ -93,6 +96,15 @@ namespace NoteBookLib
         {
             return _undoRedoManager.IsUndoAvailable();
         }
+
+        public int FindText(string text) =>
+            _findAndReplaceManager.FindText(text, _document);
+
+        public void ReplaceText(string sourceText, string replaceText) =>
+            _findAndReplaceManager.ReplaceText(sourceText, replaceText, _document);
+
+        public void ReplaceAllText(string sourceText, string replaceText) =>
+            _findAndReplaceManager.ReplaceAllText(sourceText, replaceText, _document);
 
     }
 }

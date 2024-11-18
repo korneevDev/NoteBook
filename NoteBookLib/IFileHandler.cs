@@ -13,7 +13,7 @@ namespace NoteBookLib
     {
         public IDocument MakeDocument(string filePath)
         {
-            return new TextDocumentModel(filePath, File.ReadAllText(filePath));
+            return new DocumentModel(filePath, File.ReadAllText(filePath));
         }
 
         public void SaveDocument(string filePath, string content)
@@ -26,7 +26,7 @@ namespace NoteBookLib
     {
         public IDocument MakeDocument(string filePath)
         {
-            return new TextDocumentModel();
+            return new DocumentModel();
         }
 
         public void SaveDocument(string filePath, string content)

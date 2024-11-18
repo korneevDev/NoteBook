@@ -48,6 +48,10 @@
             <Button Content="{DynamicResource Redo}"  
                     Command="{Binding RedoCommand}"
                     CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
+
+            <Button Content="{DynamicResource Find}"  
+                    Command="{Binding FindCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=TabControl}" />
         </ToolBar>
 
         <TabControl x:Name="TabControl" ItemsSource="{Binding Tabs}" SelectedIndex="0" >
