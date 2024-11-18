@@ -4,9 +4,7 @@ using System.Windows.Controls;
 
 namespace NoteBookUI
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
+
     public partial class HistoryClipboardWindow : Window
     {
         private readonly ClipboardManager _clipboardManager;

@@ -7,8 +7,19 @@
         <view:MainViewComandManager/>
     </Window.DataContext>
 
+    
     <DockPanel>
         <ToolBar DockPanel.Dock="Top">
+            <ComboBox ItemsSource="{Binding AvailableFonts}"
+                    SelectedItem="{Binding SelectedFont}"
+                    DisplayMemberPath="Source"
+                    Width="150" Margin="5" />
+
+            <!-- Выбор размера шрифта -->
+            <ComboBox ItemsSource="{Binding AvailableFontSizes}"
+                    SelectedItem="{Binding SelectedFontSize}"
+                    Width="75" Margin="5" />
+            
             <Button Content="{DynamicResource NewTab}" 
                     Command="{Binding NewTabCommand}" />
             <Button Content="{DynamicResource OpenFile}" 
@@ -86,4 +97,5 @@
 
         </TabControl>
     </DockPanel>
+
 </Window>

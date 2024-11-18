@@ -1,15 +1,38 @@
 using System.Collections.ObjectModel;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 
 
 namespace NoteBookUI.View
 {
-    public class MainViewComandManager
+    public class MainViewComandManager : OnPropertyChangedHandler
     {
 
         private readonly MainViewModel mainViewModel;
         public ObservableCollection<TabItemExtended> Tabs => mainViewModel.GetTabsList();
-        
+
+        public ObservableCollection<FontFamily> AvailableFonts => mainViewModel.GetAvailableFonts();
+        public ObservableCollection<double> AvailableFontSizes => mainViewModel.GetAvailableFontSizes();
+
+        public FontFamily SelectedFont {  get => mainViewModel.GetSelectedFont(); set  {
+                if (value != SelectedFont)
+                {
+                    mainViewModel.SetSelectedFont(value);
+                    OnPropertyChanged(nameof(SelectedFont));
+                }
+            } }
+        public double SelectedFontSize
+        {
+            get => mainViewModel.GetSelectedFontSize(); set
+            {
+                if (value != SelectedFontSize)
+                {
+                    mainViewModel.SetSelectedFontSize(value);
+                    OnPropertyChanged(nameof(SelectedFontSize));
+                }
+            }
+        }
 
         public ICommand NewTabCommand { get; }
         public ICommand CloseTabCommand { get; }

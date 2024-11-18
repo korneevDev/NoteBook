@@ -1,9 +1,5 @@
-﻿using System.Drawing;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 using NoteBookLib;
 using NoteBookUI.Utils;
@@ -36,7 +32,7 @@ namespace NoteBookUI.View
             return title;
         }
 
-        public TabItemExtended(TextEditor tabViewModel)
+        public TabItemExtended(TextEditor tabViewModel, FontFamily font, double size)
         {
             tabTextEditor = tabViewModel;
             TextBox = new TextBox
@@ -45,7 +41,9 @@ namespace NoteBookUI.View
                 AcceptsTab = true,
                 TextWrapping = TextWrapping.Wrap,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                FontFamily = font,
+                FontSize = size
             };
 
             tabViewModel.ShowFile(new ExtendedTextBox(TextBox));
@@ -159,6 +157,15 @@ namespace NoteBookUI.View
             return template.Substring(1);
         }
 
+        public void UpdateFontSize(double selectedFontSize)
+        {
+            TextBox.FontSize = selectedFontSize;
+        }
+
+        public void UpdateFont(FontFamily selectedFont)
+        {
+            TextBox.FontFamily = selectedFont;
+        }
     }
 
     public class ExtendedTextBox : ITextBox

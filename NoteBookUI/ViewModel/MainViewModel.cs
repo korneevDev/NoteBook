@@ -4,6 +4,7 @@ using System.Windows;
 using NoteBookLib;
 using NoteBookUI.Utils;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace NoteBookUI.View
 {
@@ -13,6 +14,13 @@ namespace NoteBookUI.View
         private readonly ObservableCollection<TabItemExtended> _tabs;
         private readonly ClipboardManager _clipboardManager;
         private readonly IPathFormatter _pathFormatter;
+        private FontFamily _selectedFont;
+        private double _selectedFontSize;
+
+        private readonly ObservableCollection<FontFamily> _fonts;
+        private readonly ObservableCollection<double> _fontSizes;
+
+
 
         public MainViewModel()
         {
@@ -20,6 +28,12 @@ namespace NoteBookUI.View
             _clipboardManager = new ClipboardManager();
             _pathFormatter = new IPathFormatter.Base();
             App.LanguageChanged += UpdateTabTitles;
+
+            // Инициализация доступных шрифтов и размеров
+            _fonts = new ObservableCollection<FontFamily>(Fonts.SystemFontFamilies);
+            _fontSizes = new ObservableCollection<double>(new[] { 8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 24.0 });
+            _selectedFont = _fonts.FirstOrDefault(); // Устанавливаем начальный шрифт
+            _selectedFontSize = _fontSizes.FirstOrDefault(); // Устанавливаем начальный размер
 
         }
 
@@ -37,7 +51,7 @@ namespace NoteBookUI.View
         {
             var tabTextEditor = new TextEditor(_clipboardManager);
             await tabTextEditor.CreateFile();
-            var newTab = new TabItemExtended(tabTextEditor);
+            var newTab = new TabItemExtended(tabTextEditor, _selectedFont, _selectedFontSize);
             _tabs.Add(newTab);
         }
 
@@ -79,7 +93,7 @@ namespace NoteBookUI.View
 
                 await newTabViewModel.LoadFile(openFileDialog.FileName);
 
-                var newTab = new TabItemExtended(newTabViewModel);
+                var newTab = new TabItemExtended(newTabViewModel, _selectedFont, _selectedFontSize);
  
                 _tabs.Add(newTab);
             }
@@ -210,6 +224,32 @@ namespace NoteBookUI.View
             };
 
             findWindow.Show();
+        }
+
+        public ObservableCollection<FontFamily> GetAvailableFonts() => _fonts;
+
+        public ObservableCollection<double> GetAvailableFontSizes() => _fontSizes;
+
+        public FontFamily GetSelectedFont() => _selectedFont;
+
+        public double GetSelectedFontSize() => _selectedFontSize;
+
+        public void SetSelectedFont(FontFamily selectedFont)
+        {
+            _selectedFont = selectedFont;
+            foreach (var tab in _tabs)
+            {
+                tab.UpdateFont(selectedFont);
+            }
+        }
+
+        public void SetSelectedFontSize(double selectedFontSize)
+        {
+            _selectedFontSize = selectedFontSize;
+            foreach (var tab in _tabs)
+            {
+                tab.UpdateFontSize(selectedFontSize);
+            }
         }
     }
 }
