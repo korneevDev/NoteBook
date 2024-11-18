@@ -4,7 +4,7 @@
     {
         public Dictionary<String, IFileHandler> getBuildersDictionary();
 
-        public String GetExtensionsTemplate();
+        public List<String> GetExtensionsTemplate();
 
     }
 
@@ -19,9 +19,6 @@
 
         public Dictionary<string, IFileHandler> getBuildersDictionary() =>_dictionary;
 
-        public string GetExtensionsTemplate()
-        {
-            throw new NotImplementedException();
-        }
+        public List<string> GetExtensionsTemplate() => _dictionary.Keys.ToList();
     }
 }

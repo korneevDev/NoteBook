@@ -80,7 +80,7 @@
 
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <ContentControl Content="{Binding RichTextBox}" />
+                    <ContentControl Content="{Binding TextBox}" />
                 </DataTemplate>
             </TabControl.ContentTemplate>
 

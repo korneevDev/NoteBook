@@ -10,16 +10,16 @@ namespace NoteBookLib
             extensionProvider = new BaseExtensionProvider();
         }
 
-        public IDocument LoadFile(string filePath)
+        public async Task<IDocument> LoadFile(string filePath)
         {
 
             string extension = Path.GetExtension(filePath).ToLower();
 
-            return extensionProvider.getBuildersDictionary()[extension].MakeDocument(filePath);
+            return await extensionProvider.getBuildersDictionary()[extension].MakeDocument(filePath);
 
         }
 
-        public void SaveFile(string filePath, IDocument document)
+        public async void SaveFile(string filePath, IDocument document)
         {
             string extension = Path.GetExtension(filePath).ToLower();
 
@@ -34,6 +34,8 @@ namespace NoteBookLib
             document.Save(extensionProvider.getBuildersDictionary()[extension]);
 
         }
+
+        public List<string> GetAvailableExtensions() => extensionProvider.GetExtensionsTemplate();
 
     }
 }

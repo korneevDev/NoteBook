@@ -1,4 +1,5 @@
 ﻿
+
 namespace NoteBookLib
 {
     public class TextEditor
@@ -9,6 +10,8 @@ namespace NoteBookLib
         private readonly ClipboardManager _clipboardManager;
         private readonly UndoRedoManager _undoRedoManager;
         private readonly FindAndReplaceManager _findAndReplaceManager;
+        private readonly AutoSaveManager _autoSaveManager;
+        private Func<int> _updateTitleCallback;
 
 
         public TextEditor(ClipboardManager clipboardManager)
@@ -17,23 +20,25 @@ namespace NoteBookLib
             _clipboardManager = clipboardManager;
             _undoRedoManager = new UndoRedoManager();
             _findAndReplaceManager = new FindAndReplaceManager();
+            _autoSaveManager = new AutoSaveManager(this);
+            _updateTitleCallback = () => 0;
         }
 
-        public TextEditor(IDocument document)
+        public void setOnUpdateTitleCallback(Func<int> updateTitleCallback)
         {
-            _document = document;
-            _fileManager = new FileManager();
+            _updateTitleCallback = updateTitleCallback;
         }
 
-
-        public void LoadFile(string filePath)
+        public async Task LoadFile(string filePath)
         {
-            _document = _fileManager.LoadFile(filePath);
+            _document = await _fileManager.LoadFile(filePath);
+            _autoSaveManager.Start();
         }
 
-        public void CreateFile()
+        public async Task CreateFile()
         {
-            _document = _fileManager.LoadFile("");
+            _document = await _fileManager.LoadFile("");
+            _autoSaveManager.Start();
         }
 
         public void ShowFile(ITextBox textBox)
@@ -41,16 +46,23 @@ namespace NoteBookLib
             _document.Show(textBox);
         }
 
-        public void SaveFile(string filePath)
+        public List<string> GetAvailableFileExtensions() => _fileManager.GetAvailableExtensions();
+
+        public async void SaveFile(string filePath)
         {
             _fileManager.SaveFile(filePath, _document);
             _undoRedoManager.Clear();
+            _updateTitleCallback.Invoke();
         }
 
-        public void SaveFile()
+        public async void SaveFile()
         {
-            _fileManager.SaveFile(_document);
-            _undoRedoManager.Clear();
+            if (_document != null)
+            {
+                _fileManager.SaveFile(_document);
+                _undoRedoManager.Clear();
+                _updateTitleCallback.Invoke();
+            }
         }
 
         public bool IsNewFile() => _document.IsNewFile();
@@ -63,6 +75,7 @@ namespace NoteBookLib
             _undoRedoManager.AddUndo(change);
             _document.SetNewContent(text);
             _findAndReplaceManager.ClearCounter();
+            _updateTitleCallback.Invoke();
         }
 
         public bool CanRemove() => _document.CanBeRemoved();

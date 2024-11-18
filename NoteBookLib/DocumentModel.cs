@@ -15,6 +15,7 @@
         public string GetExtension();
 
         public bool IsNewFile();
+
         public string Text();
 
         public IDocumentChange? CalculateChange(string currentText);
@@ -70,13 +71,13 @@
             textBox.ShowString(_content);
         }
 
-        public void Save(IFileHandler fileHandler)
+        public async void Save(IFileHandler fileHandler)
         {
             fileHandler.SaveDocument(_filePath, _content);
             _isModified = false;
         }
 
-        public void Save(string filePath, IFileHandler fileHandler)
+        public async void Save(string filePath, IFileHandler fileHandler)
         {
             _filePath = filePath;
             Save(fileHandler);

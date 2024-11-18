@@ -1,35 +1,43 @@
 ﻿
+using System.Text;
+
 namespace NoteBookLib
 {
     public interface IFileHandler
     {
 
-        public IDocument MakeDocument(string filePath);
+        public Task<IDocument> MakeDocument(string filePath);
 
         public void SaveDocument(string filePath, string content);
     }
 
     public class TextDocumentHandler : IFileHandler
     {
-        public IDocument MakeDocument(string filePath)
+        public async Task<IDocument> MakeDocument(string filePath)
         {
-            return new DocumentModel(filePath, File.ReadAllText(filePath));
+            string content = await File.ReadAllTextAsync(filePath);
+            return new DocumentModel(filePath, content);
         }
 
-        public void SaveDocument(string filePath, string content)
+        public async void SaveDocument(string filePath, string content)
         {
-            File.WriteAllText(filePath, content);
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
+            using StreamWriter writer = new(filePath, false, Encoding.UTF8);
+            await writer.WriteAsync(content);
         }
     }
 
     public class NewTextDocumentHandler : IFileHandler
     {
-        public IDocument MakeDocument(string filePath)
+        public async Task<IDocument> MakeDocument(string filePath)
         {
             return new DocumentModel();
         }
 
-        public void SaveDocument(string filePath, string content)
+        public async void SaveDocument(string filePath, string content)
         {
             throw new InvalidOperationException();
         }

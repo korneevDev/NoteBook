@@ -9,45 +9,45 @@
 
     public class RemoveTextChange : IDocumentChange
     {
-        public int StartIndex { get; }
-        public string Removed { get; }
+        private readonly int _startIndex;
+        private readonly string _removed;
 
         public RemoveTextChange(int startIndex, string removed)
         {
-            StartIndex = startIndex;
-            Removed = removed;
+            _startIndex = startIndex;
+            _removed = removed;
         }
 
         public void Undo(IDocument document)
         {
-            document.AddText(StartIndex, Removed);
+            document.AddText(_startIndex, _removed);
         }
 
         public void Redo(IDocument document)
         {
-            document.RemoveText(StartIndex, Removed);
+            document.RemoveText(_startIndex, _removed);
         }
     }
 
     public class AddTextChange : IDocumentChange
     {
-        public int StartIndex { get;}
-        public string Added { get; }
+        private readonly int _startIndex;
+        public readonly string _added;
 
         public AddTextChange(int startIndex, string added)
         {
-            StartIndex = startIndex;
-            Added = added;
+            _startIndex = startIndex;
+            _added = added;
         }
 
         public void Undo(IDocument document)
         {
-            document.RemoveText(StartIndex, Added);
+            document.RemoveText(_startIndex, _added);
         }
 
         public void Redo(IDocument document)
         {
-            document.AddText(StartIndex, Added);
+            document.AddText(_startIndex, _added);
         }
     }
 }

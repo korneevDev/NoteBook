@@ -22,4 +22,10 @@
 
     <sys:String x:Key="Find">Find</sys:String>
 
+    <sys:String x:Key=".txt">Text file (*.txt)</sys:String>
+
+    <sys:String x:Key=".">All files</sys:String>
+
+
+
 </ResourceDictionary>

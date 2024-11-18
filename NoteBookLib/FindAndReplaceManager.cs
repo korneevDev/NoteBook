@@ -15,7 +15,6 @@
             _document.ReplaceText(sourceText, replaceText);
         }
 
-
         public void ReplaceText(string sourceText, string replaceText, IDocument _document)
         {
             if(index != -1)

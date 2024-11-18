@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace NoteBookLib
+﻿namespace NoteBookLib
 {
     public class ClipboardManager
     {

@@ -16,7 +16,7 @@ namespace NoteBookUI.View
 
         private readonly TextEditor tabTextEditor;
 
-        public RichTextBox RichTextBox { get; }
+        public TextBox TextBox { get; }
 
         public string Title
         {
@@ -39,21 +39,30 @@ namespace NoteBookUI.View
         public TabItemExtended(TextEditor tabViewModel)
         {
             tabTextEditor = tabViewModel;
-            RichTextBox = new RichTextBox();
-            tabViewModel.ShowFile(new ExtendedRichTextBox(RichTextBox));
-            RichTextBox.TextChanged += RichTextBox_TextChanged;
+            TextBox = new TextBox
+            {
+                AcceptsReturn = true,
+                AcceptsTab = true,
+                TextWrapping = TextWrapping.Wrap,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
+            };
+
+            tabViewModel.ShowFile(new ExtendedTextBox(TextBox));
+            TextBox.TextChanged += RichTextBox_TextChanged;
+
+            tabViewModel.setOnUpdateTitleCallback(() =>
+            {
+                OnPropertyChanged(nameof(Title));
+                return 0;
+            });
         }
 
         private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            TextRange textRange = new TextRange(RichTextBox.Document.ContentStart,
-                                                    RichTextBox.Document.ContentEnd);
-            string currentText = textRange.Text;
-
-            currentText = currentText.Replace("\r\n", "\n");
+            
+            string currentText = TextBox.Text;
             tabTextEditor.CommitTextChange(currentText);
-            OnPropertyChanged(nameof(Title));
         }
 
 
@@ -64,7 +73,6 @@ namespace NoteBookUI.View
         public void Save()
         {
             tabTextEditor.SaveFile();
-            OnPropertyChanged(nameof(Title));
         }
 
         public void UpdateTitle() 
@@ -75,7 +83,6 @@ namespace NoteBookUI.View
         public void Save(string fileName)
         {
             tabTextEditor.SaveFile(fileName);
-            OnPropertyChanged(nameof(Title));
         }
 
         public void Copy(string text)
@@ -90,17 +97,17 @@ namespace NoteBookUI.View
         public void Undo()
         {
             tabTextEditor.Undo();
-            RichTextBox.TextChanged -= RichTextBox_TextChanged;
-            tabTextEditor.ShowFile(new ExtendedRichTextBox(RichTextBox));
-            RichTextBox.TextChanged += RichTextBox_TextChanged;
+            TextBox.TextChanged -= RichTextBox_TextChanged;
+            tabTextEditor.ShowFile(new ExtendedTextBox(TextBox));
+            TextBox.TextChanged += RichTextBox_TextChanged;
         }
 
         public void Redo()
         {
             tabTextEditor.Redo();
-            RichTextBox.TextChanged -= RichTextBox_TextChanged;
-            tabTextEditor.ShowFile(new ExtendedRichTextBox(RichTextBox));
-            RichTextBox.TextChanged += RichTextBox_TextChanged;
+            TextBox.TextChanged -= RichTextBox_TextChanged;
+            tabTextEditor.ShowFile(new ExtendedTextBox(TextBox));
+            TextBox.TextChanged += RichTextBox_TextChanged;
         }
 
         public bool IsRedoAvailable()
@@ -118,90 +125,54 @@ namespace NoteBookUI.View
             int index = tabTextEditor.FindText(text);
 
             if (index > -1)
-                SelectText(RichTextBox, index, index + text.Length);
+                SelectText(index, text.Length);
+        }
+
+        public void SelectText(int index, int length)
+        {
+            TextBox.Select(index, length);
+            TextBox.Focus();
         }
 
         public void FindAndReplaceString(string sourceText, string textToReplace)
         {
             tabTextEditor.ReplaceText(sourceText, textToReplace);
-            tabTextEditor.ShowFile(new ExtendedRichTextBox(RichTextBox));
+            tabTextEditor.ShowFile(new ExtendedTextBox(TextBox));
         }
 
         public void ReplaceString(string sourceText, string textToReplace)
         {
             tabTextEditor.ReplaceAllText(sourceText, textToReplace);
-            tabTextEditor.ShowFile(new ExtendedRichTextBox(RichTextBox));
+            tabTextEditor.ShowFile(new ExtendedTextBox(TextBox));
         }
 
-        public void SelectText(RichTextBox editor, int startIndex, int endIndex)
+        public string GetOpenFileTemplate()
         {
-            if (editor == null || startIndex < 0 || endIndex < startIndex)
-                throw new ArgumentException("Invalid indices or editor.");
-
-            // Получаем весь текст документа, включая символы переноса строк
-            string fullText = new TextRange(editor.Document.ContentStart, editor.Document.ContentEnd).Text;
-
-
-            // Проверяем корректность индексов
-            if (startIndex >= fullText.Length || endIndex > fullText.Length)
-                throw new ArgumentOutOfRangeException("Indices are out of range.");
-
-            // Находим начальный и конечный TextPointer
-            TextPointer startPointer = GetTextPointerAtOffset(editor.Document.ContentStart, fullText, startIndex);
-            TextPointer endPointer = GetTextPointerAtOffset(editor.Document.ContentStart, fullText, endIndex);
-
-            if (startPointer != null && endPointer != null)
+            var extensionsList = tabTextEditor.GetAvailableFileExtensions();
+            var template = "";
+            foreach( var extension in extensionsList)
             {
-                // Выделяем текст
-                editor.Selection.Select(startPointer, endPointer);
-                editor.Focus();
-            }
-        }
-
-        // Метод для преобразования текстового индекса в TextPointer
-        private TextPointer GetTextPointerAtOffset(TextPointer start, string fullText, int offset)
-        {
-            TextPointer current = start;
-            int textOffset = 0;
-
-            // Итерируемся по TextPointer и сравниваем с фактическим текстом
-            while (current != null && textOffset < offset)
-            {
-                if (GetCharacterAtPointer(current) != null)
-                {
-                    textOffset++;
-                }
-                current = current.GetPositionAtOffset(1, LogicalDirection.Forward);
+                if (!string.IsNullOrEmpty(StringResourceManager.GetString(extension)))
+                    template += template + "|" + StringResourceManager.GetString(extension) + "|*" + extension;
             }
 
-            return current;
-        }
-
-        // Получение символа в текущей позиции TextPointer
-        private char? GetCharacterAtPointer(TextPointer pointer)
-        {
-            if (pointer == null) return null;
-
-            // Извлекаем текст из текущей позиции
-            var range = new TextRange(pointer, pointer.GetPositionAtOffset(1, LogicalDirection.Forward));
-            return string.IsNullOrEmpty(range.Text) ? null : range.Text[0];
+            return template.Substring(1);
         }
 
     }
 
-    public class ExtendedRichTextBox : ITextBox
+    public class ExtendedTextBox : ITextBox
     {
-        private readonly RichTextBox _box;
+        private readonly TextBox _box;
 
-        public ExtendedRichTextBox(RichTextBox richTextBox)
+        public ExtendedTextBox(TextBox textBox)
         {
-            _box = richTextBox;
+            _box = textBox;
         }
 
         public void ShowString(string str)
         {
-            TextRange textRange = new TextRange(_box.Document.ContentStart, _box.Document.ContentEnd);
-            textRange.Text = str;
+            _box.Text = str;
         }
     }
 }

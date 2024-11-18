@@ -12,12 +12,15 @@ namespace NoteBookUI.View
 
         private readonly ObservableCollection<TabItemExtended> _tabs;
         private readonly ClipboardManager _clipboardManager;
+        private readonly IPathFormatter _pathFormatter;
 
         public MainViewModel()
         {
             _tabs = [];
             _clipboardManager = new ClipboardManager();
+            _pathFormatter = new IPathFormatter.Base();
             App.LanguageChanged += UpdateTabTitles;
+
         }
 
         private void UpdateTabTitles()
@@ -26,15 +29,14 @@ namespace NoteBookUI.View
             {
                 tab.UpdateTitle();
             }
-
         }
 
         public ObservableCollection<TabItemExtended> GetTabsList() => _tabs;
 
-        public void CreateNewTab()
+        public async void CreateNewTab()
         {
             var tabTextEditor = new TextEditor(_clipboardManager);
-            tabTextEditor.CreateFile();
+            await tabTextEditor.CreateFile();
             var newTab = new TabItemExtended(tabTextEditor);
             _tabs.Add(newTab);
         }
@@ -62,7 +64,7 @@ namespace NoteBookUI.View
 
         }
 
-        public void OpenExisttingFile()
+        public async void OpenExisttingFile()
         {
             // Создаем диалог открытия файла
             OpenFileDialog openFileDialog = new()
@@ -75,7 +77,7 @@ namespace NoteBookUI.View
 
                 var newTabViewModel = new TextEditor(_clipboardManager);
 
-                newTabViewModel.LoadFile(openFileDialog.FileName);
+                await newTabViewModel.LoadFile(openFileDialog.FileName);
 
                 var newTab = new TabItemExtended(newTabViewModel);
  
@@ -113,8 +115,8 @@ namespace NoteBookUI.View
 
             SaveFileDialog saveFileDialog = new()
             {
-                FileName = tab.TitleForSaveDialog(),
-                Filter = "Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf"
+                FileName = _pathFormatter.Format(tab.TitleForSaveDialog() + ".txt"),
+                Filter = tab.GetOpenFileTemplate(),
             };
 
             if (saveFileDialog.ShowDialog() == true)
@@ -148,18 +150,19 @@ namespace NoteBookUI.View
 
         public void Copy(TabItemExtended tab)
         {
-            tab.Copy(tab.RichTextBox.Selection.Text);
+            tab.Copy(tab.TextBox.SelectedText);
         }
 
         public void Cut(TabItemExtended tab)
         {
-            tab.Copy(tab.RichTextBox.Selection.Text);
-            tab.RichTextBox.Selection.Text = "";
+            tab.Copy(tab.TextBox.SelectedText);
+            tab.TextBox.SelectedText = "";
         }
 
         public void Insert(TabItemExtended tab)
         {
-            tab.RichTextBox.CaretPosition.InsertTextInRun(tab.GetTextFromBuffer());
+            int caretIndex = tab.TextBox.CaretIndex;
+            tab.TextBox.Text = tab.TextBox.Text.Insert(caretIndex, tab.GetTextFromBuffer());
         }
 
         public void PrintDocument(TabItemExtended tab)
@@ -198,7 +201,6 @@ namespace NoteBookUI.View
 
         public bool isUndoAvailable(object parameter) =>
             parameter is TabItemExtended extended && extended.IsUndoAvailable();
-
 
         public void FindAndReplace(TabItemExtended tab)
         {
