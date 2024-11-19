@@ -7,7 +7,7 @@ using NoteBookUI.Utils;
 namespace NoteBookUI.View
 {
 
-    public class TabItemExtended : OnPropertyChangedHandler
+    public class FileView : OnPropertyChangedHandler
     {
 
         private readonly TextEditor tabTextEditor;
@@ -32,7 +32,7 @@ namespace NoteBookUI.View
             return title;
         }
 
-        public TabItemExtended(TextEditor tabViewModel, FontFamily font, double size)
+        public FileView(TextEditor tabViewModel, FontFamily font, double size)
         {
             tabTextEditor = tabViewModel;
             TextBox = new TextBox

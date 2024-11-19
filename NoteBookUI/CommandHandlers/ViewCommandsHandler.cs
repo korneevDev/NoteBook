@@ -8,6 +8,6 @@ namespace NoteBookUI.CommandHandlers
     {
         public ICommand OpenSettingsCommand { get; } = new RelayCommand(mainViewModel.OpenSettings);
         public ICommand OpenHistoryCommand { get; } = new RelayCommand(mainViewModel.OpenClipboardHistory);
-        public ICommand PrintCommand { get; } = new RelayCommand<TabItemExtended>(mainViewModel.PrintDocument, mainViewModel.CanExecuteFileCommand);
+        public ICommand PrintCommand { get; } = new RelayCommand<FileView>(mainViewModel.PrintDocument, mainViewModel.CanExecuteFileCommand);
     }
 }

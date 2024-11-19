@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:commandHandler="clr-namespace:NoteBookUI.CommandHandlers"
-        Title="{DynamicResource Title}" Height="450" Width="800">
+        Title="{DynamicResource Title}" Height="450" Width="800"
+        Loaded="Window_Loaded">
     <Window.DataContext>
         <commandHandler:MainComandHandler /> 
     </Window.DataContext>

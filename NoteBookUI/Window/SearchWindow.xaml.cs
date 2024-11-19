@@ -8,8 +8,8 @@ namespace NoteBookUI
     /// </summary>
     public partial class SearchWindow : Window
     {
-        private readonly TabItemExtended _tab;
-        public SearchWindow(TabItemExtended tab)
+        private readonly FileView _tab;
+        public SearchWindow(FileView tab)
         {
             InitializeComponent();
             _tab = tab;

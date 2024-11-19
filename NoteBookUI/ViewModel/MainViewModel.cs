@@ -11,7 +11,7 @@ namespace NoteBookUI.View
     public class MainViewModel : OnPropertyChangedHandler
     {
 
-        private readonly ObservableCollection<TabItemExtended> _tabs;
+        private readonly ObservableCollection<FileView> _tabs;
         private readonly ClipboardManager _clipboardManager;
         private readonly IPathFormatter _pathFormatter;
         private FontFamily _selectedFont;
@@ -19,8 +19,6 @@ namespace NoteBookUI.View
 
         private readonly ObservableCollection<FontFamily> _fonts;
         private readonly ObservableCollection<double> _fontSizes;
-
-
 
         public MainViewModel()
         {
@@ -31,12 +29,12 @@ namespace NoteBookUI.View
 
             // Инициализация доступных шрифтов и размеров
             _fonts = new ObservableCollection<FontFamily>(Fonts.SystemFontFamilies);
-            _fontSizes = new ObservableCollection<double>(new[] { 8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 24.0 });
-            _selectedFont = _fonts.FirstOrDefault(); // Устанавливаем начальный шрифт
+            _fontSizes = new ObservableCollection<double>(new[] { 8.0, 10.0, 12.0, 14.0, 16.0, 18.0, 20.0, 24.0, 30.0, 34.0, 40.0, 44.0, 50.0, 52.0, 62.0, 66.0, 68.0, 72.0 });
+            _selectedFont = _fonts.FirstOrDefault()!; // Устанавливаем начальный шрифт
             _selectedFontSize = _fontSizes.FirstOrDefault(); // Устанавливаем начальный размер
 
         }
-        public bool CanExecuteFileCommand(object parameter) => parameter is TabItemExtended;
+        public bool CanExecuteFileCommand(object parameter) => parameter is FileView;
         private void UpdateTabTitles()
         {
             foreach (var tab in _tabs)
@@ -45,17 +43,17 @@ namespace NoteBookUI.View
             }
         }
 
-        public ObservableCollection<TabItemExtended> GetTabsList() => _tabs;
+        public ObservableCollection<FileView> GetTabsList() => _tabs;
 
         public async void CreateNewTab()
         {
             var tabTextEditor = new TextEditor(_clipboardManager);
             await tabTextEditor.CreateFile();
-            var newTab = new TabItemExtended(tabTextEditor, _selectedFont, _selectedFontSize);
+            var newTab = new FileView(tabTextEditor, _selectedFont, _selectedFontSize);
             _tabs.Add(newTab);
         }
 
-        public void CloseTab(TabItemExtended tab)
+        public void CloseTab(FileView tab)
         {
             if (tab == null)
                 return;
@@ -93,17 +91,17 @@ namespace NoteBookUI.View
 
                 await newTabViewModel.LoadFile(openFileDialog.FileName);
 
-                var newTab = new TabItemExtended(newTabViewModel, _selectedFont, _selectedFontSize);
+                var newTab = new FileView(newTabViewModel, _selectedFont, _selectedFontSize);
  
                 _tabs.Add(newTab);
             }
         }
 
-        public void SaveFile(TabItemExtended tab)
+        public void SaveFile(FileView tab)
         {
             SaveFile(tab, true);
         }
-        private bool SaveFile(TabItemExtended tab, bool isReturned)
+        private bool SaveFile(FileView tab, bool isReturned)
         {
             if (tab == null)
                 return false;
@@ -117,12 +115,12 @@ namespace NoteBookUI.View
             return true;
         }
 
-        public void SaveFileAs(TabItemExtended tab)
+        public void SaveFileAs(FileView tab)
         {
             SaveFileAs(tab, true);
         }
 
-        private bool SaveFileAs(TabItemExtended tab, bool isReturned)
+        private bool SaveFileAs(FileView tab, bool isReturned)
         {
             if (tab == null)
                 return false;
@@ -162,24 +160,24 @@ namespace NoteBookUI.View
             historyWindow.ShowDialog();
         }
 
-        public void Copy(TabItemExtended tab)
+        public void Copy(FileView tab)
         {
             tab.Copy(tab.TextBox.SelectedText);
         }
 
-        public void Cut(TabItemExtended tab)
+        public void Cut(FileView tab)
         {
             tab.Copy(tab.TextBox.SelectedText);
             tab.TextBox.SelectedText = "";
         }
 
-        public void Insert(TabItemExtended tab)
+        public void Insert(FileView tab)
         {
             int caretIndex = tab.TextBox.CaretIndex;
             tab.TextBox.Text = tab.TextBox.Text.Insert(caretIndex, tab.GetTextFromBuffer());
         }
 
-        public void PrintDocument(TabItemExtended tab)
+        public void PrintDocument(FileView tab)
         {
 
             if (SaveFile(tab, true))
@@ -187,7 +185,7 @@ namespace NoteBookUI.View
                 // Создаем диалоговое окно печати
                 PrintDialog printDialog = new();
 
-                PrintWindow previewWindow = new(tab.Document())
+                PrintWindow previewWindow = new(tab.Document(), _selectedFont, _selectedFontSize)
                 {
                     Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
                 };
@@ -196,14 +194,14 @@ namespace NoteBookUI.View
             
         }
 
-        public void Undo(TabItemExtended tab)
+        public void Undo(FileView tab)
         {
 
             tab.Undo();
 
         }
 
-        public void Redo(TabItemExtended tab)
+        public void Redo(FileView tab)
         {
 
             tab.Redo();
@@ -211,12 +209,12 @@ namespace NoteBookUI.View
         }
 
         public bool isRedoAvailable(object parameter) => 
-            parameter is TabItemExtended extended && extended.IsRedoAvailable();
+            parameter is FileView extended && extended.IsRedoAvailable();
 
         public bool isUndoAvailable(object parameter) =>
-            parameter is TabItemExtended extended && extended.IsUndoAvailable();
+            parameter is FileView extended && extended.IsUndoAvailable();
 
-        public void FindAndReplace(TabItemExtended tab)
+        public void FindAndReplace(FileView tab)
         {
             var findWindow = new SearchWindow(tab)
             {

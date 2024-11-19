@@ -32,4 +32,11 @@
 
     <sys:String x:Key="ChooseFont">Шрифт</sys:String>
     <sys:String x:Key="ChooseFontSize">Размер шрифта</sys:String>
+
+    <sys:String x:Key="SearchText">Найти:</sys:String>
+    <sys:String x:Key="ReplaceText">Заменить на:</sys:String>
+    <sys:String x:Key="FindNext">Найти далее</sys:String>
+    <sys:String x:Key="ReplaceAll">Заменить всё</sys:String>
+    <sys:String x:Key="Replace">Заменить</sys:String>
+    <sys:String x:Key="Close">Закрыть</sys:String>
 </ResourceDictionary>

@@ -22,13 +22,17 @@ namespace NoteBookUI
     public partial class PrintWindow : Window
     {
 
-        private FixedDocument _fixedDocument;
-        public PrintWindow(IDocument document)
+        private readonly FixedDocument _fixedDocument;
+        private readonly FontFamily _font;
+        private readonly double _fontSize;
+        public PrintWindow(IDocument document, FontFamily font, double fontSize)
         {
             InitializeComponent();
 
             // Создаём FixedDocument
             _fixedDocument = CreateFixedDocument(document.Text());
+            _font = font;
+            _fontSize = fontSize;
 
             // Устанавливаем FixedDocument в DocumentViewer
             documentViewer.Document = _fixedDocument;
@@ -37,19 +41,21 @@ namespace NoteBookUI
         private FixedDocument CreateFixedDocument(string text)
         {
             // Создаём документ
-            FixedDocument fixedDocument = new FixedDocument();
+            FixedDocument fixedDocument = new();
 
             // Создаём страницу
-            FixedPage page = new FixedPage();
-            page.Width = 816;  // Ширина страницы (8.5 inches)
-            page.Height = 1056; // Высота страницы (11 inches)
+            FixedPage page = new FixedPage
+            {
+                Width = 816,  // Ширина страницы (8.5 inches)
+                Height = 1056 // Высота страницы (11 inches)
+            };
 
             // Добавляем текст
-            TextBlock textBlock = new TextBlock
+            TextBlock textBlock = new()
             {
                 Text = text,
-                FontSize = 14,
-                FontFamily = new FontFamily("Arial"),
+                FontSize = _fontSize,
+                FontFamily = _font,
                 TextWrapping = TextWrapping.Wrap,
                 Width = 750 // Ширина текста на странице
             };
@@ -58,25 +64,13 @@ namespace NoteBookUI
             page.Children.Add(textBlock);
 
             // Оборачиваем страницу в PageContent
-            PageContent pageContent = new PageContent();
+            PageContent pageContent = new();
             ((IAddChild)pageContent).AddChild(page);
 
             // Добавляем PageContent в FixedDocument
             fixedDocument.Pages.Add(pageContent);
 
             return fixedDocument;
-        }
-
-        private void PrintButton_Click(object sender, RoutedEventArgs e)
-        {
-            PrintDialog printDialog = new PrintDialog();
-
-            if (printDialog.ShowDialog() == true)
-            {
-                // Печать документа
-                printDialog.PrintDocument(_fixedDocument.DocumentPaginator, "Printing Preview Document");
-                Close(); // Закрываем окно предпросмотра
-            }
         }
     }
 }

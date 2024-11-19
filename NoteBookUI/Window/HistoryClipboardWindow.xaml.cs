@@ -17,7 +17,7 @@ namespace NoteBookUI
             historyItemsControl.ItemsSource = _clipboardManager.GetBuffer();
         }
 
-        private void CopyFromHistory_Click(object sender, RoutedEventArgs e)
+        private void CopyFromHistory_Click(object? sender, RoutedEventArgs e)
         {
             if (sender is Button button)
             {

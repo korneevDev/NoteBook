@@ -32,5 +32,13 @@
     <sys:String x:Key="ChooseFont">Font</sys:String>
     <sys:String x:Key="ChooseFontSize">Font size</sys:String>
 
+    <sys:String x:Key="SearchText">Search text:</sys:String>
+    <sys:String x:Key="ReplaceText">Replace With:</sys:String>
+    <sys:String x:Key="FindNext">Find next</sys:String>
+    <sys:String x:Key="ReplaceAll">Replace all</sys:String>
+    <sys:String x:Key="Replace">Replace</sys:String>
+    <sys:String x:Key="Close">Close</sys:String>
+
+
 
 </ResourceDictionary>

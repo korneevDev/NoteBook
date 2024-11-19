@@ -18,19 +18,19 @@
         </Grid.ColumnDefinitions>
 
         <!-- Поле для текста поиска -->
-        <TextBlock Text="Search Text:" VerticalAlignment="Center" />
-        <TextBox x:Name="SearchTextBox" Grid.Column="1" Width="700" Margin="5" />
+        <TextBlock Text="{DynamicResource SearchText}" VerticalAlignment="Center" />
+        <TextBox x:Name="SearchTextBox" Grid.Column="1" Width="600" Margin="5" />
 
         <!-- Поле для текста замены -->
-        <TextBlock Text="Replace With:" Grid.Row="1" VerticalAlignment="Center" />
-        <TextBox x:Name="ReplaceTextBox" Grid.Row="1" Grid.Column="1" Width="700" Margin="5" />
+        <TextBlock Text="{DynamicResource ReplaceText}" Grid.Row="1" VerticalAlignment="Center" />
+        <TextBox x:Name="ReplaceTextBox" Grid.Row="1" Grid.Column="1" Width="600" Margin="5" />
 
         <!-- Кнопки -->
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right">
-            <Button Content="Find Next" Width="80" Margin="5" Click="FindNextButton_Click" />
-            <Button Content="Replace" Width="80" Margin="5" Click="ReplaceButton_Click" />
-            <Button Content="Replace All" Width="80" Margin="5" Click="ReplaceAllButton_Click" />
-            <Button Content="Close" Width="80" Margin="5" Click="CloseButton_Click" />
+            <Button Content="{DynamicResource FindNext}" Width="80" Margin="5" Click="FindNextButton_Click" />
+            <Button Content="{DynamicResource Replace}" Width="80" Margin="5" Click="ReplaceButton_Click" />
+            <Button Content="{DynamicResource ReplaceAll}" Width="80" Margin="5" Click="ReplaceAllButton_Click" />
+            <Button Content="{DynamicResource Close}" Width="80" Margin="5" Click="CloseButton_Click" />
         </StackPanel>
     </Grid>
 </Window>

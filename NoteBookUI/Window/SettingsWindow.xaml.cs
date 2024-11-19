@@ -4,9 +4,6 @@ using System.Windows.Controls;
 
 namespace NoteBookUI
 {
-    /// <summary>
-    /// Interaction logic for SettingsWindow.xaml
-    /// </summary>
     public partial class SettingsWindow : Window
     {
 
