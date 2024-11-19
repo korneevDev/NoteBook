@@ -37,7 +37,7 @@
 
     public class DocumentModel : IDocument
     { 
-        public string _filePath;
+        private string _filePath;
         private string _content;
         private bool _isModified;
 
@@ -172,8 +172,8 @@
         public void ReplaceText(string text, string newText, int index)
         {
             // Разбиваем строку на три части: до, заменяемый участок, после
-            string before = _content.Substring(0, index);
-            string after = _content.Substring(index + text.Length);
+            string before = _content[..index];
+            string after = _content[(index + text.Length)..];
 
             // Склеиваем с заменой
             _content = before + newText + after;

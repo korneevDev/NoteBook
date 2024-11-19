@@ -24,4 +24,12 @@
     <sys:String x:Key=".txt">Текстовый файл (*.txt)</sys:String>
 
     <sys:String x:Key=".">Все файлы</sys:String>
+
+    <sys:String x:Key="File">Файл</sys:String>
+    <sys:String x:Key="Edit">Правка</sys:String>
+    <sys:String x:Key="View">Вид</sys:String>
+    <sys:String x:Key="Fonts">Шрифт</sys:String>
+
+    <sys:String x:Key="ChooseFont">Шрифт</sys:String>
+    <sys:String x:Key="ChooseFontSize">Размер шрифта</sys:String>
 </ResourceDictionary>

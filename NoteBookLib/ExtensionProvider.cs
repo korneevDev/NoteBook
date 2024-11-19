@@ -10,10 +10,10 @@
 
     public class BaseExtensionProvider : IExtensionProvider
     {
-        private Dictionary<String, IFileHandler> _dictionary = new()
+        private readonly Dictionary<String, IFileHandler> _dictionary = new()
         {
-                { ".txt", new TextDocumentHandler() },
-                { "", new NewTextDocumentHandler() },
+                { ".txt", new IFileHandler.TextDocumentHandler() },
+                { "", new IFileHandler.NewTextDocumentHandler() },
             };
 
 

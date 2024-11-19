@@ -36,7 +36,7 @@ namespace NoteBookUI.View
             _selectedFontSize = _fontSizes.FirstOrDefault(); // Устанавливаем начальный размер
 
         }
-
+        public bool CanExecuteFileCommand(object parameter) => parameter is TabItemExtended;
         private void UpdateTabTitles()
         {
             foreach (var tab in _tabs)
