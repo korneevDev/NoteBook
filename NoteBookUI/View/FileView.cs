@@ -185,5 +185,10 @@ namespace NoteBookUI.View
         {
             TextBox.FontFamily = selectedFont;
         }
+
+        internal void UpdateAutosaveInterval(string interval)
+        {
+            tabTextEditor.UpdateAutosaveInterval(interval);
+        }
     }
 }

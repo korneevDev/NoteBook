@@ -41,4 +41,13 @@
     <sys:String x:Key="ReplaceAll">Заменить всё</sys:String>
     <sys:String x:Key="Replace">Заменить</sys:String>
     <sys:String x:Key="Close">Закрыть</sys:String>
+
+    <sys:String x:Key="ChooseInterval">Периодичность автосохранения</sys:String>
+    <sys:String x:Key="NoInterval">Не сохранять</sys:String>
+    <sys:String x:Key="OneInterval">1 минута</sys:String>
+    <sys:String x:Key="TwoInterval">2 минуты</sys:String>
+    <sys:String x:Key="FiveInterval">5 минут</sys:String>
+    <sys:String x:Key="TenInterval">10 минут</sys:String>
+    <sys:String x:Key="FifteenInterval">15 минут</sys:String>
+    <sys:String x:Key="ThirtyInterval">30 минут</sys:String>
 </ResourceDictionary>

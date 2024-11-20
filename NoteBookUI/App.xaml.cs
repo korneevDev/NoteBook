@@ -12,6 +12,7 @@ namespace NoteBookUI
     {
 
         public static event Action? LanguageChanged;
+        public static event Action? IntervalChanged;
 
         public void ChangeCulture(string cultureName)
         {
@@ -40,6 +41,11 @@ namespace NoteBookUI
         {
             var currentCulture = Settings.Default.AppCulture ?? "en-US";
             ChangeCulture(currentCulture);
+        }
+
+        public void ChangeInterval()
+        {
+            IntervalChanged?.Invoke();
         }
     }
 

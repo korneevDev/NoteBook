@@ -19,7 +19,7 @@
 
         <!-- Поле для текста поиска -->
         <TextBlock Text="{DynamicResource SearchText}" VerticalAlignment="Center" />
-        <TextBox x:Name="SearchTextBox" Grid.Column="1" Width="600" Margin="5" />
+        <TextBox x:Name="SearchTextBox" Grid.Column="1" Width="60" Margin="5" />
 
         <!-- Поле для текста замены -->
         <TextBlock Text="{DynamicResource ReplaceText}" Grid.Row="1" VerticalAlignment="Center" />

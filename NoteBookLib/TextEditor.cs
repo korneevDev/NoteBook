@@ -48,16 +48,16 @@ namespace NoteBookLib
             _updateTitleCallback = updateTitleCallback;
         }
 
-        public async Task LoadFile(string filePath)
+        public async Task LoadFile(string filePath, string autoSaveInterval)
         {
             _document = await _fileManager.LoadFile(filePath);
-            _autoSaveManager.Start();
+            _autoSaveManager.UpdateInterval(autoSaveInterval);
         }
 
-        public async Task CreateFile()
+        public async Task CreateFile(string autosaveInterval)
         {
             _document = await _fileManager.LoadFile("");
-            _autoSaveManager.Start();
+            _autoSaveManager.UpdateInterval(autosaveInterval);
         }
 
         public void ShowFile(ITextBox textBox)
@@ -137,5 +137,9 @@ namespace NoteBookLib
         public void ReplaceAllText(string sourceText, string replaceText) =>
             _findAndReplaceManager.ReplaceAllText(sourceText, replaceText, _document);
 
+        public void UpdateAutosaveInterval(string interval)
+        {
+            _autoSaveManager.UpdateInterval(interval);
+        }
     }
 }

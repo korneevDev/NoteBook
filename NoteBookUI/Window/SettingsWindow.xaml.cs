@@ -11,19 +11,36 @@ namespace NoteBookUI
         {
             InitializeComponent();
             SetCurrentLanguageSelection();
+            SetCurrentIntervalSelection();
         }
 
         private void SetCurrentLanguageSelection()
         {
             // Получаем текущую культуру из настроек
-            var currentCulture = Settings.Default.AppCulture ?? "en-US";
+            var currentLanguage = Settings.Default.AppCulture ?? "en-US";
  
             // Проходим по элементам ComboBox и устанавливаем текущий язык
             foreach (ComboBoxItem item in LanguageComboBox.Items)
             {
-                if (item.Tag.ToString() == currentCulture)
+                if (item.Tag.ToString() == currentLanguage)
                 {
                     LanguageComboBox.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
+        private void SetCurrentIntervalSelection()
+        {
+            // Получаем текущую культуру из настроек
+            var currentInterval = Settings.Default.AutoSaveInterval ?? "No";
+
+            // Проходим по элементам ComboBox и устанавливаем текущий язык
+            foreach (ComboBoxItem item in AutoSaveIntervalComboBox.Items)
+            {
+                if (item.Tag.ToString() == currentInterval)
+                {
+                    AutoSaveIntervalComboBox.SelectedItem = item;
                     break;
                 }
             }
@@ -40,6 +57,19 @@ namespace NoteBookUI
                 // Сохраняем выбранную культуру в настройках
                 Settings.Default.AppCulture = cultureName;
                 Settings.Default.Save();
+
+            }
+
+            if (AutoSaveIntervalComboBox.SelectedItem is ComboBoxItem selectedInterval &&
+                    selectedInterval.Tag is string interval)
+            {
+
+                // Сохраняем выбранную культуру в настройках
+                Settings.Default.AutoSaveInterval = interval;
+                Settings.Default.Save();
+
+                // Меняем культуру приложения
+                ((App)Application.Current).ChangeInterval();
 
             }
         }

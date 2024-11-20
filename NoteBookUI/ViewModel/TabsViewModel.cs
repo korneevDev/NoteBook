@@ -17,6 +17,7 @@ namespace NoteBookUI.ViewModel
         {
             _tabs = [];
             App.LanguageChanged += UpdateTabTitles;
+            App.IntervalChanged += UpdateAutosaveInterval;
         }
 
         public ObservableCollection<FileView> GetTabsList() => _tabs;
@@ -26,6 +27,16 @@ namespace NoteBookUI.ViewModel
             foreach (var tab in _tabs)
             {
                 tab.UpdateTitle();
+            }
+        }
+
+        private void UpdateAutosaveInterval()
+        {
+            var interval = Settings.Default.AutoSaveInterval ?? "";
+
+            foreach (var tab in _tabs)
+            {
+                tab.UpdateAutosaveInterval(interval);
             }
         }
 

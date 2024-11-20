@@ -33,7 +33,8 @@ namespace NoteBookUI.ViewModel
         {
 
             var tabTextEditor = new TextEditor(_clipboardManager);
-            await tabTextEditor.CreateFile();
+            var interval = Settings.Default.AutoSaveInterval ?? "No";
+            await tabTextEditor.CreateFile(interval);
             var newTab = _fontViewModel.CreateNewTab(tabTextEditor);
 
             _tabsViewModel.AddTab(newTab);
@@ -75,7 +76,9 @@ namespace NoteBookUI.ViewModel
 
                 var newTabViewModel = new TextEditor(_clipboardManager);
 
-                await newTabViewModel.LoadFile(openFileDialog.FileName);
+                var interval = Settings.Default.AutoSaveInterval ?? "No";
+
+                await newTabViewModel.LoadFile(openFileDialog.FileName, interval);
 
                 var newTab = _fontViewModel.CreateNewTab(newTabViewModel);
 

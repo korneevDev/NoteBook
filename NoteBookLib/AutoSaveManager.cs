@@ -2,25 +2,30 @@
 
 namespace NoteBookLib
 {
-    public class AutoSaveManager
+    public class AutoSaveManager(TextEditor textEditor) : IDisposable
     {
-        private Timer autoSaveTimer; // Таймер для автосохранения
-        private TextEditor textEditor;
+        private Timer? autoSaveTimer; // Таймер для автосохранения
+        private readonly TextEditor textEditor = textEditor;
 
+        public void Start(int interval) => 
+            autoSaveTimer = new Timer(
+                callback: AutoSaveCallback, null, TimeSpan.Zero, TimeSpan.FromMinutes(interval)
+            );
 
-        public AutoSaveManager(TextEditor textEditor)
+        public void UpdateInterval(string interval)
         {
-            this.textEditor = textEditor;
-            
-        }
-
-        public void Start()
-        {
-            autoSaveTimer = new Timer(AutoSaveCallback, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+            if (int.TryParse(interval, out int intInterval))
+            {
+                Start(intInterval);
+                return;
+            }
+           
+            Dispose();
+                
         }
 
         // Обработчик события Elapsed для автосохранения
-        private void AutoSaveCallback(object state)
+        private void AutoSaveCallback(object? state)
         {
             try
             {
@@ -34,10 +39,11 @@ namespace NoteBookLib
         }
 
         
-        // Остановка таймера при закрытии окна
-        private void Window_Closed(object sender, EventArgs e)
+        // Остановка таймера
+        public void Dispose()
         {
-            autoSaveTimer.Dispose(); // Останавливаем таймер
+            autoSaveTimer?.Dispose(); // Останавливаем таймер
+            autoSaveTimer = null;
         }
     }
 }

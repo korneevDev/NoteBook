@@ -41,6 +41,15 @@
     <sys:String x:Key="Replace">Replace</sys:String>
     <sys:String x:Key="Close">Close</sys:String>
 
+    <sys:String x:Key="ChooseInterval">Choose autosave interval</sys:String>
+    <sys:String x:Key="NoInterval">No save</sys:String>
+    <sys:String x:Key="OneInterval">1 minute</sys:String>
+    <sys:String x:Key="TwoInterval">2 minute</sys:String>
+    <sys:String x:Key="FiveInterval">5 minute</sys:String>
+    <sys:String x:Key="TenInterval">10 minute</sys:String>
+    <sys:String x:Key="FifteenInterval">15 minute</sys:String>
+    <sys:String x:Key="ThirtyInterval">30 minute</sys:String>
+
 
 
 </ResourceDictionary>
