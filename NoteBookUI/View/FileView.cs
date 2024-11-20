@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System.Collections;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using NoteBookLib;
-using NoteBookLib.DataModel;
+using NoteBookLib.Entity.DataModel;
+using NoteBookLib.Presentation;
+using NoteBookLib.Presentation.ObjectWrapper;
 using NoteBookUI.Utils;
 
 namespace NoteBookUI.View
@@ -19,8 +21,6 @@ namespace NoteBookUI.View
         {
             get => tabTextEditor.UpdateTitle(StringResourceManager.GetString("NewFileTitle"));
         }
-
-        public IDocument Document() => tabTextEditor.Document();
 
         public string TitleForSaveDialog()
         {
@@ -193,5 +193,16 @@ namespace NoteBookUI.View
         {
             tabTextEditor.PrintContent(printer);
         }
+
+        public string Format(string path) =>
+            tabTextEditor.Format(path);
+
+        public IEnumerable GetBuffer() =>
+            tabTextEditor.GetBuffer();
+        
+
+        public void SetOldValueToBufferTop(int index) =>
+            tabTextEditor.SetOldValueToBufferTop(index);
+        
     }
 }

@@ -10,8 +10,7 @@ namespace NoteBookUI
         public MainWindow()
         {
             InitializeComponent();
-            ((App)Application.Current).ChangeCulture();
-            
+            ((App)Application.Current).ChangeCulture(); 
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

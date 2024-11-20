@@ -1,4 +1,4 @@
-﻿namespace NoteBookLib
+﻿namespace NoteBookLib.Presentation.ObjectWrapper
 {
     public interface IPrinter
     {

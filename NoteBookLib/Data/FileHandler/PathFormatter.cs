@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace NoteBookLib.FileHandler
+namespace NoteBookLib.Data.FileHandler
 {
     public interface IPathFormatter
     {

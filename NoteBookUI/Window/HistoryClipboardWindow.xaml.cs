@@ -1,4 +1,4 @@
-﻿using NoteBookLib.FeatureManager;
+﻿using NoteBookUI.View;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -7,14 +7,14 @@ namespace NoteBookUI
 
     public partial class HistoryClipboardWindow : Window
     {
-        private readonly ClipboardManager _clipboardManager;
+        private readonly FileView _view;
 
-        public HistoryClipboardWindow(ClipboardManager clipboardManager)
+        public HistoryClipboardWindow(FileView fileView)
         {
             InitializeComponent();
 
-            _clipboardManager = clipboardManager;
-            historyItemsControl.ItemsSource = _clipboardManager.GetBuffer();
+            _view = fileView;
+            historyItemsControl.ItemsSource = _view.GetBuffer();
         }
 
         private void CopyFromHistory_Click(object? sender, RoutedEventArgs e)
@@ -24,7 +24,7 @@ namespace NoteBookUI
                 string textToCopy = (string)button.DataContext; // Извлекаем текст элемента
                 int index = historyItemsControl.Items.IndexOf(textToCopy);
 
-                _clipboardManager.SetOldValueToBufferTop(index);
+                _view.SetOldValueToBufferTop(index);
 
                 Close();
             }

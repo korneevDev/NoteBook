@@ -1,6 +1,5 @@
 ﻿using NoteBookUI.View;
 using NoteBookUI.ViewModel;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace NoteBookUI.CommandHandlers
@@ -10,8 +9,11 @@ namespace NoteBookUI.CommandHandlers
         TabsViewModel tabsViewModel
         )
     {
-        public ICommand OpenSettingsCommand { get; } = new RelayCommand(mainViewModel.OpenSettings);
-        public ICommand OpenHistoryCommand { get; } = new RelayCommand(mainViewModel.OpenClipboardHistory);
-        public ICommand PrintCommand { get; } = new RelayCommand<FileView>(mainViewModel.PrintDocument, tabsViewModel.CanExecuteTabCommand);
+        public ICommand OpenSettingsCommand { get; } = 
+            new RelayCommand(mainViewModel.OpenSettings);
+        public ICommand OpenHistoryCommand { get; } = 
+            new RelayCommand<FileView>(mainViewModel.OpenClipboardHistory, tabsViewModel.CanExecuteTabCommand);
+        public ICommand PrintCommand { get; } = 
+            new RelayCommand<FileView>(mainViewModel.PrintDocument, tabsViewModel.CanExecuteTabCommand);
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace NoteBookLib.FeatureManager
 {
-    public class ClipboardManager
+    public class ClipboardInteractor
     {
         private readonly List<string> _buffer;
 
-        public ClipboardManager()
+        public ClipboardInteractor()
         {
             _buffer = [];
         }
@@ -14,10 +14,8 @@
             _buffer.Add(text);
         }
 
-        public string GetLastValueFromBuffer()
-        {
-            return _buffer[^1];
-        }
+        public string GetLastValueFromBuffer() =>_buffer[^1];
+        
 
         public List<string> GetBuffer() => _buffer;
 

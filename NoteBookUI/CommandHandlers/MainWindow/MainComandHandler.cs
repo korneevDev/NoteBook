@@ -1,5 +1,6 @@
+using NoteBookLib.Data.FileHandler;
+using NoteBookLib.Domain.FeatureManager;
 using NoteBookLib.FeatureManager;
-using NoteBookLib.FileHandler;
 using NoteBookUI.ViewModel;
 
 
@@ -16,7 +17,7 @@ namespace NoteBookUI.CommandHandlers
         public MainComandHandler()
         {
             var pathFormatter = new IPathFormatter.Base();
-            var clipboardManager = new ClipboardManager();
+            var clipboardManager = new ClipboardInteractor();
             var printer = new Printer();
 
             var tabsViewModel = new TabsViewModel();
@@ -30,8 +31,7 @@ namespace NoteBookUI.CommandHandlers
             var openWindowDialogViewModel = 
                 new OpenWindowDialogViewModel(
                     fileHandlerViewModel, 
-                    fontViewModel, 
-                    clipboardManager
+                    fontViewModel
                 );
 
             var editFileViewModel = new EditFileViewModel();

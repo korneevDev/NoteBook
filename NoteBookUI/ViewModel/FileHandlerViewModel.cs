@@ -1,7 +1,8 @@
 ﻿using Microsoft.Win32;
-using NoteBookLib;
+using NoteBookLib.Data.FileHandler;
+using NoteBookLib.Domain.FeatureManager;
 using NoteBookLib.FeatureManager;
-using NoteBookLib.FileHandler;
+using NoteBookLib.Presentation;
 using NoteBookUI.Utils;
 using NoteBookUI.View;
 using System.Windows;
@@ -10,14 +11,14 @@ namespace NoteBookUI.ViewModel
 {
     public class FileHandlerViewModel
     {
-        private readonly ClipboardManager _clipboardManager;
+        private readonly ClipboardInteractor _clipboardManager;
         private readonly IPathFormatter _pathFormatter;
         private readonly FontViewModel _fontViewModel;
         private readonly TabsViewModel _tabsViewModel;
 
         public FileHandlerViewModel(
             FontViewModel fontViewModel, 
-            ClipboardManager clipboardManager,
+            ClipboardInteractor clipboardManager,
             IPathFormatter pathFormatter,
             TabsViewModel tabsViewModel
             )
@@ -34,7 +35,7 @@ namespace NoteBookUI.ViewModel
         public async void CreateNewTab()
         {
 
-            var tabTextEditor = new TextEditor(_clipboardManager);
+            var tabTextEditor = new TextEditor(_clipboardManager, _pathFormatter);
             var interval = Settings.Default.AutoSaveInterval ?? "No";
             await tabTextEditor.CreateFile(interval);
             var newTab = _fontViewModel.CreateNewTab(tabTextEditor);
@@ -76,7 +77,7 @@ namespace NoteBookUI.ViewModel
             if (openFileDialog.ShowDialog() == true)
             {
 
-                var newTabViewModel = new TextEditor(_clipboardManager);
+                var newTabViewModel = new TextEditor(_clipboardManager, _pathFormatter);
 
                 var interval = Settings.Default.AutoSaveInterval ?? "No";
 
@@ -116,7 +117,7 @@ namespace NoteBookUI.ViewModel
 
             SaveFileDialog saveFileDialog = new()
             {
-                FileName = _pathFormatter.Format(tab.TitleForSaveDialog() + ".txt"),
+                FileName = tab.Format(tab.TitleForSaveDialog() + ".txt"),
                 Filter = tab.GetOpenFileTemplate(),
             };
 

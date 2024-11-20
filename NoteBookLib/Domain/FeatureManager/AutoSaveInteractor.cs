@@ -1,6 +1,8 @@
-﻿namespace NoteBookLib.FeatureManager
+﻿using NoteBookLib.Presentation;
+
+namespace NoteBookLib.Domain.FeatureManager
 {
-    public class AutoSaveManager(TextEditor textEditor) : IDisposable
+    public class AutoSaveInteractor(TextEditor textEditor) : IDisposable
     {
         private Timer? autoSaveTimer; // Таймер для автосохранения
         private readonly TextEditor textEditor = textEditor;

@@ -1,11 +1,15 @@
-﻿using NoteBookLib.DataModel;
-using NoteBookLib.FileHandler;
+﻿using NoteBookLib.Data.FileHandler;
+using NoteBookLib.Entity.DataModel;
 
-namespace NoteBookLib.FeatureManager
+namespace NoteBookLib.Domain.FeatureManager
 {
-    public class FileManager(IExtensionProvider extensionProvider)
+    public class FileManager(
+        IExtensionProvider extensionProvider, 
+        IPathFormatter pathFormatter
+        )
     {
         private readonly IExtensionProvider _extensionProvider = extensionProvider;
+        private readonly IPathFormatter _pathFormatter = pathFormatter;
 
         public async Task<IDocument> LoadFile(string filePath)
         {
@@ -35,5 +39,8 @@ namespace NoteBookLib.FeatureManager
         public List<string> GetAvailableExtensions() =>
             _extensionProvider.GetExtensionsTemplate();
 
+        public string Format(string path) =>
+            _pathFormatter.Format(path);
+        
     }
 }

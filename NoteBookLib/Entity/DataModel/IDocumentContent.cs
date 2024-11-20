@@ -1,6 +1,7 @@
-﻿using NoteBookLib.FileHandler;
+﻿using NoteBookLib.Data.FileHandler;
+using NoteBookLib.Presentation.ObjectWrapper;
 
-namespace NoteBookLib.DataModel
+namespace NoteBookLib.Entity.DataModel
 {
     public interface IDocumentContent
     {
@@ -24,7 +25,7 @@ namespace NoteBookLib.DataModel
 
         public class TextContent(string text) : IDocumentContent
         {
-        
+
             private readonly string _text = text;
 
             public IDocumentChange CalculateChange(IDocumentContent newContent)
@@ -97,9 +98,9 @@ namespace NoteBookLib.DataModel
                     startIndex = startIndex - removedText.Length;
                 }
 
-                return new TextContent(_text.Remove(startIndex, 
+                return new TextContent(_text.Remove(startIndex,
                         Math.Min(
-                            _text.Length, 
+                            _text.Length,
                             Math.Min(removedText.Length, _text.Length - startIndex)
                             )
                         )
@@ -113,7 +114,7 @@ namespace NoteBookLib.DataModel
 
             public IDocumentContent ReplaceText(string text, string newText) =>
                  new TextContent(_text.Replace(text, newText));
-            
+
 
             public IDocumentContent ReplaceText(string text, string newText, int index)
             {

@@ -1,6 +1,6 @@
-﻿using NoteBookLib.DataModel;
+﻿using NoteBookLib.Entity.DataModel;
 
-namespace NoteBookLib.FeatureManager
+namespace NoteBookLib.Domain.FeatureManager
 {
     public class FindAndReplaceManager
     {

@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
-using NoteBookLib;
+using NoteBookLib.Presentation.ObjectWrapper;
 
 namespace NoteBookUI
 {

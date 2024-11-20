@@ -1,4 +1,4 @@
-﻿namespace NoteBookLib.DataModel
+﻿namespace NoteBookLib.Entity.DataModel
 {
     public interface IDocumentChange
     {
@@ -47,15 +47,15 @@
 
         public class EmptyChange : IDocumentChange
         {
-            public void AddToStack(Stack<IDocumentChange> stack) {}
+            public void AddToStack(Stack<IDocumentChange> stack) { }
 
             public void Redo(IDocument document) =>
                 throw new NotSupportedException();
-            
+
 
             public void Undo(IDocument document) =>
                 throw new NotSupportedException();
-            
+
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace NoteBookUI
@@ -35,7 +34,7 @@ namespace NoteBookUI
             // Получаем текущее значение интервала из настроек
             var currentInterval = Settings.Default.AutoSaveInterval ?? "No";
 
-            // Проходим по элементам ComboBox и устанавливаем текущий интервал
+            // Проходим по элементам ComboBox и устанавливаем текущий
             foreach (ComboBoxItem item in AutoSaveIntervalComboBox.Items)
             {
                 if (item.Tag.ToString() == currentInterval)

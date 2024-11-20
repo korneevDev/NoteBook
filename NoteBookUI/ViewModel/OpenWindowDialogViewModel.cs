@@ -1,10 +1,4 @@
-﻿using NoteBookLib.FeatureManager;
-using NoteBookUI.View;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NoteBookUI.View;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,8 +6,7 @@ namespace NoteBookUI.ViewModel
 {
     public class OpenWindowDialogViewModel(
         FileHandlerViewModel fileHandler, 
-        FontViewModel fontViewModel,
-        ClipboardManager clipboardManager
+        FontViewModel fontViewModel
         )
     {
 
@@ -37,16 +30,18 @@ namespace NoteBookUI.ViewModel
         {
             SettingsWindow settingsWindow = new()
             {
-                Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+                Owner = Application.Current.Windows
+                    .OfType<Window>().FirstOrDefault(w => w.IsActive)
             };
             settingsWindow.ShowDialog();
         }
 
-        public void OpenClipboardHistory()
+        public void OpenClipboardHistory(FileView tab)
         {
-            HistoryClipboardWindow historyWindow = new(clipboardManager)
+            HistoryClipboardWindow historyWindow = new(tab)
             {
-                Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+                Owner = Application.Current.Windows
+                    .OfType<Window>().FirstOrDefault(w => w.IsActive)
             };
             historyWindow.ShowDialog();
         }

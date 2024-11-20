@@ -1,10 +1,10 @@
-﻿
-
-using NoteBookLib.DataModel;
+﻿using NoteBookLib.Data.FileHandler;
+using NoteBookLib.Domain.FeatureManager;
+using NoteBookLib.Entity.DataModel;
 using NoteBookLib.FeatureManager;
-using NoteBookLib.FileHandler;
+using NoteBookLib.Presentation.ObjectWrapper;
 
-namespace NoteBookLib
+namespace NoteBookLib.Presentation
 {
     public interface IFileHandleInteractor
     {
@@ -23,28 +23,28 @@ namespace NoteBookLib
 
     }
 
-    
+
 
     public class TextEditor
     {
 
         private IDocument? _document;
         private readonly FileManager _fileManager;
-        private readonly ClipboardManager _clipboardManager;
+        private readonly ClipboardInteractor _clipboardManager;
         private readonly UndoRedoManager _undoRedoManager;
         private readonly FindAndReplaceManager _findAndReplaceManager;
-        private readonly AutoSaveManager _autoSaveManager;
+        private readonly AutoSaveInteractor _autoSaveManager;
         private Action _updateTitleCallback;
 
 
-        public TextEditor(ClipboardManager clipboardManager)
+        public TextEditor(ClipboardInteractor clipboardManager, IPathFormatter pathFormatter)
         {
             IExtensionProvider extensionProvider = new IExtensionProvider.Base();
-            _fileManager = new FileManager(extensionProvider);
+            _fileManager = new FileManager(extensionProvider, pathFormatter);
             _clipboardManager = clipboardManager;
             _undoRedoManager = new UndoRedoManager();
             _findAndReplaceManager = new FindAndReplaceManager();
-            _autoSaveManager = new AutoSaveManager(this);
+            _autoSaveManager = new AutoSaveInteractor(this);
             _updateTitleCallback = () => { };
         }
 
@@ -67,7 +67,7 @@ namespace NoteBookLib
 
         public void ShowFile(ITextBox textBox)
         {
-            _document.Show(textBox);
+            _document?.Show(textBox);
         }
 
         public List<string> GetAvailableFileExtensions() => _fileManager.GetAvailableExtensions();
@@ -109,9 +109,8 @@ namespace NoteBookLib
             _clipboardManager.Copy(text);
         }
 
-        public string GetTextFromBuffer() => _clipboardManager.GetLastValueFromBuffer();
+        public List<String> GetBuffer() => _clipboardManager.GetBuffer();
 
-        public IDocument Document() => _document;
 
         public void Undo()
         {
@@ -149,5 +148,17 @@ namespace NoteBookLib
         {
             _document.PrintContent(printer);
         }
+
+        public string Format(string path) =>
+            _fileManager.Format(path);
+
+        public void SetOldValueToBufferTop(int index)
+        {
+            _clipboardManager.SetOldValueToBufferTop(index);
+        }
+
+        public string GetTextFromBuffer() =>
+            _clipboardManager.GetLastValueFromBuffer();
+        
     }
 }

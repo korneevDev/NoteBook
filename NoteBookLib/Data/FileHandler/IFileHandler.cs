@@ -1,8 +1,8 @@
 ﻿
 using System.Text;
-using NoteBookLib.DataModel;
+using NoteBookLib.Entity.DataModel;
 
-namespace NoteBookLib.FileHandler
+namespace NoteBookLib.Data.FileHandler
 {
     public interface IFileHandler
     {

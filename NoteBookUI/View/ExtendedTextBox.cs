@@ -1,5 +1,4 @@
-﻿
-using NoteBookLib;
+﻿using NoteBookLib.Presentation.ObjectWrapper;
 using System.Windows.Controls;
 
 namespace NoteBookUI.View

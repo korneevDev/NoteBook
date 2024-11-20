@@ -49,8 +49,12 @@
 
             <!-- Меню Вид -->
             <MenuItem Header="{DynamicResource View}">
-                <MenuItem Header="{DynamicResource Settings}" Command="{Binding ViewCommands.OpenSettingsCommand}" />
-                <MenuItem Header="{DynamicResource Clipboard}" Command="{Binding ViewCommands.OpenHistoryCommand}" />
+                <MenuItem Header="{DynamicResource Settings}" 
+                          Command="{Binding ViewCommands.OpenSettingsCommand}" />
+                <MenuItem Header="{DynamicResource Clipboard}" 
+                          Command="{Binding ViewCommands.OpenHistoryCommand}"
+                          CommandParameter="{Binding SelectedItem, ElementName=TabControl}"
+                          />
                 <MenuItem Header="{DynamicResource Print}" 
                           Command="{Binding ViewCommands.PrintCommand}" 
                           CommandParameter="{Binding SelectedItem, ElementName=TabControl}"/>
@@ -70,32 +74,30 @@
                 </MenuItem>
 
                 <MenuItem Header="{DynamicResource ChooseTextColor}">
-                    <ComboBox ItemsSource="{Binding FontsCommands.AvailableColors}"
-                            SelectedItem="{Binding FontsCommands.SelectedTextColor}"
-                            Width="150">
+                    <ComboBox Name="TextColorComboBox"
+                              ItemsSource="{Binding FontsCommands.AvailableColors}"
+                              SelectedItem="{Binding FontsCommands.SelectedTextColor}"
+                              Width="150">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="2">
                                     <!-- Цветной квадрат -->
-                                    <Rectangle Width="16" Height="16" Fill="{Binding}" Stroke="Black" Margin="0,0,5,0"/>
-                                    <!-- Название цвета -->
-                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                    <Rectangle Width="64" Height="16" Fill="{Binding}" Stroke="Black" Margin="0,0,5,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </MenuItem>
                 <MenuItem Header="{DynamicResource ChooseBackgroundColor}">
-                    <ComboBox ItemsSource="{Binding FontsCommands.AvailableColors}"
+                    <ComboBox Name="BackgroundColorComboBox"
+                              ItemsSource="{Binding FontsCommands.AvailableColors}"
                               SelectedItem="{Binding FontsCommands.SelectedBackgroundColor}"
                               Width="150">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="2">
                                     <!-- Цветной квадрат -->
-                                    <Rectangle Width="16" Height="16" Fill="{Binding}" Stroke="Black" Margin="0,0,5,0"/>
-                                    <!-- Название цвета -->
-                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                    <Rectangle Width="64" Height="16" Fill="{Binding}" Stroke="Black" Margin="0,0,5,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>

@@ -1,6 +1,7 @@
-﻿using NoteBookLib.FileHandler;
+﻿using NoteBookLib.Data.FileHandler;
+using NoteBookLib.Presentation.ObjectWrapper;
 
-namespace NoteBookLib.DataModel
+namespace NoteBookLib.Entity.DataModel
 {
     public interface IDocument
     {
@@ -65,7 +66,7 @@ namespace NoteBookLib.DataModel
 
         public void Show(ITextBox textBox) =>
             _content.ShowContent(textBox);
-        
+
 
         public async void Save(IFileHandler fileHandler)
         {
@@ -87,30 +88,30 @@ namespace NoteBookLib.DataModel
         public IDocumentChange CalculateChange(IDocumentContent newContent) =>
             _content.CalculateChange(newContent);
 
-        
+
 
         public void AddText(int startIndex, string newText) =>
             _content = _content.AddText(startIndex, newText);
-        
+
 
         public void RemoveText(int startIndex, string removedText) =>
             _content = _content.RemoveText(startIndex, removedText);
-        
+
 
         public int FindSubstringIndexes(string text, int index) =>
             _content.FindSubstringIndexes(text, index);
-        
+
 
         public void ReplaceText(string text, string newText) =>
             _content = _content.ReplaceText(text, newText);
-        
+
 
         public void ReplaceText(string text, string newText, int index) =>
             _content = _content.ReplaceText(text, newText, index);
-        
+
 
         public void PrintContent(IPrinter printer) =>
             _content.PrintContent(printer);
-        
+
     }
 }

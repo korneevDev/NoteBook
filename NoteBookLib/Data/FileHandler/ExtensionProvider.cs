@@ -1,4 +1,4 @@
-﻿namespace NoteBookLib.FileHandler
+﻿namespace NoteBookLib.Data.FileHandler
 {
     public interface IExtensionProvider
     {
