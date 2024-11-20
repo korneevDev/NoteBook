@@ -32,7 +32,12 @@ namespace NoteBookUI.View
             return title;
         }
 
-        public FileView(TextEditor tabViewModel, FontFamily font, double size)
+        public FileView(
+            TextEditor tabViewModel, 
+            FontFamily font, 
+            double size, 
+            SolidColorBrush textColor, 
+            SolidColorBrush backgroundColor)
         {
             tabTextEditor = tabViewModel;
             TextBox = new TextBox
@@ -42,6 +47,8 @@ namespace NoteBookUI.View
                 TextWrapping = TextWrapping.Wrap,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                Background = backgroundColor,
+                Foreground = textColor,
                 FontFamily = font,
                 FontSize = size
             };
@@ -161,6 +168,18 @@ namespace NoteBookUI.View
         {
             TextBox.FontSize = selectedFontSize;
         }
+
+        public void UpdateTextColor(SolidColorBrush selectedColor)
+        {
+            TextBox.Foreground = selectedColor;
+        }
+
+        public void UpdateBackgroundColor(SolidColorBrush selectedColor)
+        {
+            TextBox.Background = selectedColor;
+        }
+
+
 
         public void UpdateFont(FontFamily selectedFont)
         {

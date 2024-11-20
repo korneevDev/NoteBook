@@ -31,7 +31,9 @@
     <sys:String x:Key="Fonts">Fonts</sys:String>
     <sys:String x:Key="ChooseFont">Font</sys:String>
     <sys:String x:Key="ChooseFontSize">Font size</sys:String>
-
+    <sys:String x:Key="ChooseTextColor">Choose text color</sys:String>
+    <sys:String x:Key="ChooseBackgroundColor">Choose background color</sys:String>
+    
     <sys:String x:Key="SearchText">Search text:</sys:String>
     <sys:String x:Key="ReplaceText">Replace With:</sys:String>
     <sys:String x:Key="FindNext">Find next</sys:String>

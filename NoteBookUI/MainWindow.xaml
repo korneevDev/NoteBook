@@ -68,7 +68,41 @@
                               SelectedItem="{Binding FontsCommands.SelectedFontSize}"
                               Width="75" />
                 </MenuItem>
+
+                <MenuItem Header="{DynamicResource ChooseTextColor}">
+                    <ComboBox ItemsSource="{Binding FontsCommands.AvailableColors}"
+                            SelectedItem="{Binding FontsCommands.SelectedTextColor}"
+                            Width="150">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="2">
+                                    <!-- Цветной квадрат -->
+                                    <Rectangle Width="16" Height="16" Fill="{Binding}" Stroke="Black" Margin="0,0,5,0"/>
+                                    <!-- Название цвета -->
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </MenuItem>
+                <MenuItem Header="{DynamicResource ChooseBackgroundColor}">
+                    <ComboBox ItemsSource="{Binding FontsCommands.AvailableColors}"
+                              SelectedItem="{Binding FontsCommands.SelectedBackgroundColor}"
+                              Width="150">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="2">
+                                    <!-- Цветной квадрат -->
+                                    <Rectangle Width="16" Height="16" Fill="{Binding}" Stroke="Black" Margin="0,0,5,0"/>
+                                    <!-- Название цвета -->
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </MenuItem>
             </MenuItem>
+
         </Menu>
 
         <!-- Контент вкладок -->

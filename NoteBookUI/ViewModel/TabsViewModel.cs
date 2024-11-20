@@ -45,6 +45,22 @@ namespace NoteBookUI.ViewModel
             }
         }
 
+        public void SetSelectedTextColor(SolidColorBrush selectedColor)
+        {
+            foreach (var tab in _tabs)
+            {
+                tab.UpdateTextColor(selectedColor);
+            }
+        }
+
+        public void SetSelectedBackgroundColor(SolidColorBrush selectedColor)
+        {
+            foreach (var tab in _tabs)
+            {
+                tab.UpdateBackgroundColor(selectedColor);
+            }
+        }
+
         public void AddTab(FileView tab) { 
             _tabs.Add(tab);
         }

@@ -25,7 +25,15 @@ namespace NoteBookUI
         private readonly FixedDocument _fixedDocument;
         private readonly FontFamily _font;
         private readonly double _fontSize;
-        public PrintWindow(IDocument document, FontFamily font, double fontSize)
+        private readonly SolidColorBrush _textColor;
+        private readonly SolidColorBrush _backgroundColor;
+        public PrintWindow(
+            IDocument document, 
+            FontFamily font, 
+            double fontSize, 
+            SolidColorBrush textColor, 
+            SolidColorBrush backgroundColor
+            )
         {
             InitializeComponent();
 
@@ -57,6 +65,8 @@ namespace NoteBookUI
                 FontSize = _fontSize,
                 FontFamily = _font,
                 TextWrapping = TextWrapping.Wrap,
+                Foreground = _textColor,
+                Background = _backgroundColor,
                 Width = 750 // Ширина текста на странице
             };
 

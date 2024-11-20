@@ -20,6 +20,10 @@ namespace NoteBookUI.ViewModel
         private readonly ObservableCollection<FontFamily> _fonts;
         private readonly ObservableCollection<double> _fontSizes;
 
+        private SolidColorBrush _selectedTextColor;
+        private SolidColorBrush _selectedBackgroundColor;
+        private readonly ObservableCollection<SolidColorBrush> _colors;
+
         public FontViewModel(TabsViewModel tabsViewModel)
         {
             _tabsViewModel = tabsViewModel;
@@ -30,13 +34,18 @@ namespace NoteBookUI.ViewModel
             _selectedFont = _fonts.FirstOrDefault()!; // Устанавливаем начальный шрифт
             _selectedFontSize = _fontSizes[6]; // Устанавливаем начальный размер
 
+            // Инициализация доступных цветов
+            _colors = new ObservableCollection<SolidColorBrush>(typeof(Colors).GetProperties()
+                .Select(p => new SolidColorBrush((Color)p.GetValue(null)!)));
+            _selectedTextColor = new SolidColorBrush(Colors.Black); // Начальный цвет текста
+            _selectedBackgroundColor = new SolidColorBrush(Colors.White); // Начальный цвет фона
         }
 
         public FileView CreateNewTab(TextEditor textEditor) => 
-            new(textEditor, _selectedFont, _selectedFontSize);
+            new(textEditor, _selectedFont, _selectedFontSize, _selectedTextColor, _selectedBackgroundColor);
 
         public PrintWindow CreatePrintWindow(IDocument document) =>
-            new(document, _selectedFont, _selectedFontSize);
+            new(document, _selectedFont, _selectedFontSize, _selectedTextColor, _selectedBackgroundColor);
 
         public ObservableCollection<FontFamily> GetAvailableFonts() => _fonts;
 
@@ -56,6 +65,25 @@ namespace NoteBookUI.ViewModel
         {
             _selectedFontSize = selectedFontSize;
             _tabsViewModel.SetSelectedFontSize(_selectedFontSize);
+        }
+
+        // Методы для работы с цветами
+        public ObservableCollection<SolidColorBrush> GetAvailableColors() => _colors;
+
+        public SolidColorBrush GetSelectedTextColor() => _selectedTextColor;
+
+        public void SetSelectedTextColor(SolidColorBrush selectedColor)
+        {
+            _selectedTextColor = selectedColor;
+            _tabsViewModel.SetSelectedTextColor(_selectedTextColor);
+        }
+
+        public SolidColorBrush GetSelectedBackgroundColor() => _selectedBackgroundColor;
+
+        public void SetSelectedBackgroundColor(SolidColorBrush selectedColor)
+        {
+            _selectedBackgroundColor = selectedColor;
+            _tabsViewModel.SetSelectedBackgroundColor(_selectedBackgroundColor);
         }
 
     }

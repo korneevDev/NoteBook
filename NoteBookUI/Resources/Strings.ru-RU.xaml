@@ -32,6 +32,8 @@
 
     <sys:String x:Key="ChooseFont">Шрифт</sys:String>
     <sys:String x:Key="ChooseFontSize">Размер шрифта</sys:String>
+    <sys:String x:Key="ChooseTextColor">Цвет текста</sys:String>
+    <sys:String x:Key="ChooseBackgroundColor">Цвет фона</sys:String>
 
     <sys:String x:Key="SearchText">Найти:</sys:String>
     <sys:String x:Key="ReplaceText">Заменить на:</sys:String>
