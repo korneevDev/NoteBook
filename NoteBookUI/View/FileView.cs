@@ -151,7 +151,7 @@ namespace NoteBookUI.View
                     template += template + "|" + StringResourceManager.GetString(extension) + "|*" + extension;
             }
 
-            return template[1..];
+            return template.Substring(1);
         }
 
         public void UpdateFontSize(double selectedFontSize) =>

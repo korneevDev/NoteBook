@@ -5,24 +5,6 @@ using NoteBookLib.Entity.ObjectWrapper;
 
 namespace NoteBookLib.Presentation
 {
-    public interface IFileHandleInteractor
-    {
-        public Task LoadFile(string filePath);
-
-        public Task CreateFile();
-
-        public void SaveFile();
-
-        public void SaveFile(string filePath);
-
-    }
-
-    public interface IEditTextInteractor
-    {
-
-    }
-
-
 
     public class TextEditor
     {
