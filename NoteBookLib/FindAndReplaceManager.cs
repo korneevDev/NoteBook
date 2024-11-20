@@ -1,4 +1,6 @@
-﻿namespace NoteBookLib
+﻿using NoteBookLib.DataModel;
+
+namespace NoteBookLib
 {
     public class FindAndReplaceManager
     {

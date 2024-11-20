@@ -1,5 +1,6 @@
 ﻿
 using System.Text;
+using NoteBookLib.DataModel;
 
 namespace NoteBookLib
 {
@@ -16,7 +17,7 @@ namespace NoteBookLib
             public async Task<IDocument> MakeDocument(string filePath)
             {
                 string content = await File.ReadAllTextAsync(filePath);
-                return new DocumentModel(filePath, content);
+                return new DocumentModel(filePath, new IDocumentContent.TextContent(content));
             }
 
             public async void SaveDocument(string filePath, string content)

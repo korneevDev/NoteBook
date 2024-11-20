@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using NoteBookLib;
+using NoteBookLib.DataModel;
 using NoteBookUI.Utils;
 
 namespace NoteBookUI.View
@@ -65,7 +66,7 @@ namespace NoteBookUI.View
         private void TextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             string currentText = TextBox.Text;
-            tabTextEditor.CommitTextChange(currentText);
+            tabTextEditor.CommitTextChange(new IDocumentContent.TextContent(currentText));
         }
 
 
@@ -164,20 +165,17 @@ namespace NoteBookUI.View
             return template.Substring(1);
         }
 
-        public void UpdateFontSize(double selectedFontSize)
-        {
+        public void UpdateFontSize(double selectedFontSize) =>
             TextBox.FontSize = selectedFontSize;
-        }
+        
 
-        public void UpdateTextColor(SolidColorBrush selectedColor)
-        {
+        public void UpdateTextColor(SolidColorBrush selectedColor) =>
             TextBox.Foreground = selectedColor;
-        }
+        
 
-        public void UpdateBackgroundColor(SolidColorBrush selectedColor)
-        {
+        public void UpdateBackgroundColor(SolidColorBrush selectedColor) =>
             TextBox.Background = selectedColor;
-        }
+        
 
 
 
@@ -186,9 +184,14 @@ namespace NoteBookUI.View
             TextBox.FontFamily = selectedFont;
         }
 
-        internal void UpdateAutosaveInterval(string interval)
+        public void UpdateAutosaveInterval(string interval)
         {
             tabTextEditor.UpdateAutosaveInterval(interval);
+        }
+
+        public void PrintContent(IPrinter printer)
+        {
+            tabTextEditor.PrintContent(printer);
         }
     }
 }

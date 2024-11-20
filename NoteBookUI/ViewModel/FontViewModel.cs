@@ -1,4 +1,5 @@
 ﻿using NoteBookLib;
+using NoteBookLib.DataModel;
 using NoteBookUI.View;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace NoteBookUI.ViewModel
     public class FontViewModel
     {
         private readonly TabsViewModel _tabsViewModel;
+        private readonly Printer _printer;
 
         private FontFamily _selectedFont;
         private double _selectedFontSize;
@@ -24,9 +26,10 @@ namespace NoteBookUI.ViewModel
         private SolidColorBrush _selectedBackgroundColor;
         private readonly ObservableCollection<SolidColorBrush> _colors;
 
-        public FontViewModel(TabsViewModel tabsViewModel)
+        public FontViewModel(TabsViewModel tabsViewModel, Printer printer)
         {
             _tabsViewModel = tabsViewModel;
+            _printer = printer;
 
             // Инициализация доступных шрифтов и размеров
             _fonts = new ObservableCollection<FontFamily>(Fonts.SystemFontFamilies);
@@ -44,8 +47,8 @@ namespace NoteBookUI.ViewModel
         public FileView CreateNewTab(TextEditor textEditor) => 
             new(textEditor, _selectedFont, _selectedFontSize, _selectedTextColor, _selectedBackgroundColor);
 
-        public PrintWindow CreatePrintWindow(IDocument document) =>
-            new(document, _selectedFont, _selectedFontSize, _selectedTextColor, _selectedBackgroundColor);
+        public PrintWindow CreatePrintWindow(FileView tab) =>
+            new(_printer, tab, _selectedFont, _selectedFontSize, _selectedTextColor, _selectedBackgroundColor);
 
         public ObservableCollection<FontFamily> GetAvailableFonts() => _fonts;
 

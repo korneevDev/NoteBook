@@ -1,4 +1,6 @@
-﻿namespace NoteBookLib
+﻿using NoteBookLib.DataModel;
+
+namespace NoteBookLib
 {
     public class UndoRedoManager
     {
@@ -33,13 +35,11 @@
 
         public void AddUndo(IDocumentChange change)
         {
-            if (change != null)
-            {
-                undoStack.Push(change);
-                redoStack.Clear();
-            }
+            change.AddToStack(undoStack);
+            redoStack.Clear();
         }
-        public bool IsRedoAvailable()=>
+
+        public bool IsRedoAvailable() =>
             redoStack.Count != 0;
         
 

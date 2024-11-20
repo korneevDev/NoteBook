@@ -16,9 +16,10 @@ namespace NoteBookUI.CommandHandlers
         {
             var pathFormatter = new IPathFormatter.Base();
             var clipboardManager = new ClipboardManager();
+            var printer = new Printer();
 
             var tabsViewModel = new TabsViewModel();
-            var fontViewModel = new FontViewModel(tabsViewModel);
+            var fontViewModel = new FontViewModel(tabsViewModel, printer);
             var fileHandlerViewModel = 
                 new FileHandlerViewModel(
                     fontViewModel, clipboardManager, 

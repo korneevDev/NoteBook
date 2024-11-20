@@ -17,7 +17,7 @@ namespace NoteBookUI.ViewModel
         )
     {
 
-        public async void PrintDocument(FileView tab)
+        public void PrintDocument(FileView tab)
         {
             if (tab == null || !fileHandler.SaveBool(tab))
                 return;
@@ -25,7 +25,7 @@ namespace NoteBookUI.ViewModel
             // Создаем диалоговое окно печати
             PrintDialog printDialog = new();
 
-            PrintWindow previewWindow = fontViewModel.CreatePrintWindow(tab.Document());
+            PrintWindow previewWindow = fontViewModel.CreatePrintWindow(tab) ;
 
             previewWindow.Owner = Application.Current.Windows
                 .OfType<Window>()

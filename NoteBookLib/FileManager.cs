@@ -1,4 +1,6 @@
 ﻿
+using NoteBookLib.DataModel;
+
 namespace NoteBookLib
 {
     public class FileManager

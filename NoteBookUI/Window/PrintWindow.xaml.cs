@@ -1,4 +1,6 @@
 ﻿using NoteBookLib;
+using NoteBookLib.DataModel;
+using NoteBookUI.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace NoteBookUI
 {
@@ -23,12 +26,9 @@ namespace NoteBookUI
     {
 
         private readonly FixedDocument _fixedDocument;
-        private readonly FontFamily _font;
-        private readonly double _fontSize;
-        private readonly SolidColorBrush _textColor;
-        private readonly SolidColorBrush _backgroundColor;
         public PrintWindow(
-            IDocument document, 
+            Printer printer,
+            FileView tab, 
             FontFamily font, 
             double fontSize, 
             SolidColorBrush textColor, 
@@ -37,22 +37,34 @@ namespace NoteBookUI
         {
             InitializeComponent();
 
-            // Создаём FixedDocument
-            _fixedDocument = CreateFixedDocument(document.Text());
-            _font = font;
-            _fontSize = fontSize;
+            tab.PrintContent(printer);
 
-            // Устанавливаем FixedDocument в DocumentViewer
+            _fixedDocument = printer.CreateFixedDocument(font, fontSize, textColor, backgroundColor);
+
             documentViewer.Document = _fixedDocument;
         }
 
-        private FixedDocument CreateFixedDocument(string text)
+    }
+
+    public class Printer : IPrinter
+    {
+        private string? _text;
+        public void Print(string text)
+        {
+            _text = text;
+        }
+
+        public FixedDocument CreateFixedDocument(
+            FontFamily font,
+            double fontSize,
+            SolidColorBrush textColor,
+            SolidColorBrush backgroundColor)
         {
             // Создаём документ
             FixedDocument fixedDocument = new();
 
             // Создаём страницу
-            FixedPage page = new FixedPage
+            FixedPage page = new()
             {
                 Width = 816,  // Ширина страницы (8.5 inches)
                 Height = 1056 // Высота страницы (11 inches)
@@ -61,12 +73,12 @@ namespace NoteBookUI
             // Добавляем текст
             TextBlock textBlock = new()
             {
-                Text = text,
-                FontSize = _fontSize,
-                FontFamily = _font,
+                Text = _text ?? "",
+                FontSize = fontSize,
+                FontFamily = font,
                 TextWrapping = TextWrapping.Wrap,
-                Foreground = _textColor,
-                Background = _backgroundColor,
+                Foreground = textColor,
+                Background = backgroundColor,
                 Width = 750 // Ширина текста на странице
             };
 

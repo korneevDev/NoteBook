@@ -1,4 +1,4 @@
-﻿using NoteBookLib;
+﻿using NoteBookLib.DataModel;
 using System.Windows.Controls;
 
 namespace NoteBookUI.View

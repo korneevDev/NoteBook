@@ -1,5 +1,7 @@
 ﻿
 
+using NoteBookLib.DataModel;
+
 namespace NoteBookLib
 {
     public interface IFileHandleInteractor
@@ -24,7 +26,7 @@ namespace NoteBookLib
     public class TextEditor
     {
 
-        private IDocument _document;
+        private IDocument? _document;
         private readonly FileManager _fileManager;
         private readonly ClipboardManager _clipboardManager;
         private readonly UndoRedoManager _undoRedoManager;
@@ -69,7 +71,7 @@ namespace NoteBookLib
 
         public async void SaveFile(string filePath)
         {
-            _fileManager.SaveFile(filePath, _document);
+            _fileManager.SaveFile(filePath, _document!);
             _undoRedoManager.Clear();
             _updateTitleCallback.Invoke();
         }
@@ -84,20 +86,20 @@ namespace NoteBookLib
             }
         }
 
-        public bool IsNewFile() => _document.IsNewFile();
+        public bool IsNewFile() => _document!.IsNewFile();
 
-        public string UpdateTitle(string defaultValue) => _document.Title(defaultValue);
+        public string UpdateTitle(string defaultValue) => _document!.Title(defaultValue);
 
-        public void CommitTextChange(string text)
+        public void CommitTextChange(IDocumentContent text)
         {
-            IDocumentChange change = _document.CalculateChange(text);
+            IDocumentChange change = _document!.CalculateChange(text);
             _undoRedoManager.AddUndo(change);
             _document.SetNewContent(text);
             _findAndReplaceManager.ClearCounter();
             _updateTitleCallback.Invoke();
         }
 
-        public bool CanRemove() => _document.CanBeRemoved();
+        public bool CanRemove() => _document?.CanBeRemoved() ?? true;
 
         public void CopyText(string text)
         {
@@ -137,9 +139,12 @@ namespace NoteBookLib
         public void ReplaceAllText(string sourceText, string replaceText) =>
             _findAndReplaceManager.ReplaceAllText(sourceText, replaceText, _document);
 
-        public void UpdateAutosaveInterval(string interval)
-        {
+        public void UpdateAutosaveInterval(string interval) =>
             _autoSaveManager.UpdateInterval(interval);
+
+        public void PrintContent(IPrinter printer)
+        {
+            _document.PrintContent(printer);
         }
     }
 }

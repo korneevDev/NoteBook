@@ -32,10 +32,10 @@ namespace NoteBookUI
 
         private void SetCurrentIntervalSelection()
         {
-            // Получаем текущую культуру из настроек
+            // Получаем текущее значение интервала из настроек
             var currentInterval = Settings.Default.AutoSaveInterval ?? "No";
 
-            // Проходим по элементам ComboBox и устанавливаем текущий язык
+            // Проходим по элементам ComboBox и устанавливаем текущий интервал
             foreach (ComboBoxItem item in AutoSaveIntervalComboBox.Items)
             {
                 if (item.Tag.ToString() == currentInterval)
