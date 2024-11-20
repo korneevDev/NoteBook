@@ -39,15 +39,13 @@
                 redoStack.Clear();
             }
         }
-        public bool IsRedoAvailable()
-        {
-            return redoStack.Count != 0;
-        }
+        public bool IsRedoAvailable()=>
+            redoStack.Count != 0;
+        
 
-        public bool IsUndoAvailable()
-        {
-            return undoStack.Count != 0;
-        }
+        public bool IsUndoAvailable() =>
+            undoStack.Count != 0;
+        
 
     }
 }

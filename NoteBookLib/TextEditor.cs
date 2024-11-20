@@ -119,15 +119,14 @@ namespace NoteBookLib
             _undoRedoManager.Redo(_document);
         }
 
-        public bool IsRedoAvailable()
-        {
-            return _undoRedoManager.IsRedoAvailable();
-        }
+        public bool IsRedoAvailable() =>
+            _undoRedoManager.IsRedoAvailable();
 
-        public bool IsUndoAvailable()
-        {
-            return _undoRedoManager.IsUndoAvailable();
-        }
+        public bool IsUndoAvailable() =>
+            _undoRedoManager.IsUndoAvailable();
+
+        public bool IsInsertAvailable() =>
+            _clipboardManager.IsInsertAvailable();
 
         public int FindText(string text) =>
             _findAndReplaceManager.FindText(text, _document);

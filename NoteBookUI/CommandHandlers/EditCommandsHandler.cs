@@ -10,7 +10,7 @@ namespace NoteBookUI.CommandHandlers
         )
     {
         public ICommand CopyCommand { get; } = new RelayCommand<FileView>(_editViewModel.Copy, _tabsViewModel.CanExecuteTabCommand);
-        public ICommand InsertCommand { get; } = new RelayCommand<FileView>(_editViewModel.Insert, _tabsViewModel.CanExecuteTabCommand);
+        public ICommand InsertCommand { get; } = new RelayCommand<FileView>(_editViewModel.Insert, _editViewModel.IsInsertAvailable);
         public ICommand CutCommand { get; } = new RelayCommand<FileView>(_editViewModel.Cut, _tabsViewModel.CanExecuteTabCommand);
 
         public ICommand FindCommand { get; } = new RelayCommand<FileView>(_editViewModel.FindAndReplace, _tabsViewModel.CanExecuteTabCommand);

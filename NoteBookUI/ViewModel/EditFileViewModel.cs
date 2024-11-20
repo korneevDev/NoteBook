@@ -38,6 +38,9 @@ namespace NoteBookUI.ViewModel
         public bool IsUndoAvailable(object parameter) =>
             parameter is FileView extended && extended.IsUndoAvailable();
 
+        public bool IsInsertAvailable(object parameter) =>
+            parameter is FileView extended && extended.IsInsertAvailable();
+
         public void FindAndReplace(FileView tab)
         {
             var findWindow = new SearchWindow(tab)

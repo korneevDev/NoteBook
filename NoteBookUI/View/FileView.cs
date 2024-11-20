@@ -106,15 +106,17 @@ namespace NoteBookUI.View
             TextBox.TextChanged += TextBoxTextChanged;
         }
 
-        public bool IsRedoAvailable()
-        {
-            return tabTextEditor.IsRedoAvailable();
-        }
+        public bool IsRedoAvailable() =>
+            tabTextEditor.IsRedoAvailable();
 
-        public bool IsUndoAvailable()
-        {
-            return tabTextEditor.IsUndoAvailable();
-        }
+
+        public bool IsUndoAvailable() =>
+            tabTextEditor.IsUndoAvailable();
+        
+
+        public bool IsInsertAvailable() =>
+            tabTextEditor.IsInsertAvailable();
+        
 
         public void FindNextString(string text)
         {

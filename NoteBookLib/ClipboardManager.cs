@@ -26,6 +26,8 @@
             _buffer.Add(_buffer[index]);
             _buffer.RemoveAt(index);
         }
-
+        public bool IsInsertAvailable() =>
+            _buffer.Count != 0;
+        
     }
 }
