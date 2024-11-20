@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using NoteBookLib.Entity.DataModel;
 using NoteBookLib.Presentation;
-using NoteBookLib.Presentation.ObjectWrapper;
+using NoteBookLib.Entity.ObjectWrapper;
 using NoteBookUI.Utils;
 
 namespace NoteBookUI.View
@@ -20,17 +20,6 @@ namespace NoteBookUI.View
         public string Title
         {
             get => tabTextEditor.UpdateTitle(StringResourceManager.GetString("NewFileTitle"));
-        }
-
-        public string TitleForSaveDialog()
-        {
-            var title = Title;
-            if (title.EndsWith(" *"))
-            {
-                return title.TrimEnd('*').TrimEnd(' ');
-            }
-
-            return title;
         }
 
         public FileView(
@@ -162,7 +151,7 @@ namespace NoteBookUI.View
                     template += template + "|" + StringResourceManager.GetString(extension) + "|*" + extension;
             }
 
-            return template.Substring(1);
+            return template[1..];
         }
 
         public void UpdateFontSize(double selectedFontSize) =>
@@ -194,15 +183,16 @@ namespace NoteBookUI.View
             tabTextEditor.PrintContent(printer);
         }
 
-        public string Format(string path) =>
-            tabTextEditor.Format(path);
-
         public IEnumerable GetBuffer() =>
             tabTextEditor.GetBuffer();
         
 
         public void SetOldValueToBufferTop(int index) =>
             tabTextEditor.SetOldValueToBufferTop(index);
-        
+
+        public string GetExtension() => tabTextEditor.GetExtension();
+
+        public string GetUniqueFileName() =>
+            tabTextEditor.GetUniqueTitle();
     }
 }

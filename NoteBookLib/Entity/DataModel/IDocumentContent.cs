@@ -1,5 +1,5 @@
 ﻿using NoteBookLib.Data.FileHandler;
-using NoteBookLib.Presentation.ObjectWrapper;
+using NoteBookLib.Entity.ObjectWrapper;
 
 namespace NoteBookLib.Entity.DataModel
 {
@@ -54,13 +54,13 @@ namespace NoteBookLib.Entity.DataModel
             {
                 int startIndex = oldText.Zip(newText, (o, n) => o == n).TakeWhile(equal => equal).Count();
 
-                var removedText = oldText.Substring(startIndex, oldText.Length - startIndex);
-                newText = newText.Substring(startIndex, newText.Length - startIndex);
+                var removedText = oldText[startIndex..];
+                newText = newText[startIndex..];
 
                 int commonSuffixLength =
                     newText.Reverse().Zip(removedText.Reverse(), (o, n) => o == n).TakeWhile(equal => equal).Count();
 
-                removedText = removedText.Substring(0, removedText.Length - commonSuffixLength);
+                removedText = removedText[..^commonSuffixLength];
 
                 return new IDocumentChange.RemoveTextChange(startIndex, removedText);
             }
@@ -70,23 +70,23 @@ namespace NoteBookLib.Entity.DataModel
 
                 int startIndex = oldText.Zip(newText, (o, n) => o == n).TakeWhile(equal => equal).Count();
 
-                var addedText = newText.Substring(startIndex, newText.Length - startIndex);
-                oldText = oldText.Substring(startIndex, oldText.Length - startIndex);
+                var addedText = newText[startIndex..];
+                oldText = oldText[startIndex..];
                 int commonSuffixLength =
                     oldText.Reverse().Zip(addedText.Reverse(), (o, n) => o == n).TakeWhile(equal => equal).Count();
 
-                addedText = addedText.Substring(0, addedText.Length - commonSuffixLength);
+                addedText = addedText[..^commonSuffixLength];
 
                 return new IDocumentChange.AddTextChange(startIndex, addedText);
             }
 
             public IDocumentContent AddText(int startIndex, string newText)
             {
-                var prefix = _text.Substring(0, Math.Min(_text.Length, startIndex));
+                var prefix = _text[..Math.Min(_text.Length, startIndex)];
                 var suffix = "";
                 if (startIndex < _text.Length)
                 {
-                    suffix = _text.Substring(startIndex + 1);
+                    suffix = _text[(startIndex + 1)..];
                 }
                 return new TextContent(prefix + newText + suffix);
             }
@@ -95,7 +95,7 @@ namespace NoteBookLib.Entity.DataModel
             {
                 if (startIndex >= _text.Length)
                 {
-                    startIndex = startIndex - removedText.Length;
+                    startIndex -= removedText.Length;
                 }
 
                 return new TextContent(_text.Remove(startIndex,

@@ -1,8 +1,7 @@
 ﻿using NoteBookLib.Data.FileHandler;
 using NoteBookLib.Domain.FeatureManager;
 using NoteBookLib.Entity.DataModel;
-using NoteBookLib.FeatureManager;
-using NoteBookLib.Presentation.ObjectWrapper;
+using NoteBookLib.Entity.ObjectWrapper;
 
 namespace NoteBookLib.Presentation
 {
@@ -44,25 +43,26 @@ namespace NoteBookLib.Presentation
             _clipboardManager = clipboardManager;
             _undoRedoManager = new UndoRedoManager();
             _findAndReplaceManager = new FindAndReplaceManager();
-            _autoSaveManager = new AutoSaveInteractor(this);
+            _autoSaveManager = new AutoSaveInteractor(_fileManager);
             _updateTitleCallback = () => { };
-        }
+        }       
 
         public void SetOnUpdateTitleCallback(Action updateTitleCallback)
         {
             _updateTitleCallback = updateTitleCallback;
+            _fileManager.SetOnUpdateTitleCallback(updateTitleCallback);
         }
 
         public async Task LoadFile(string filePath, string autoSaveInterval)
         {
             _document = await _fileManager.LoadFile(filePath);
-            _autoSaveManager.UpdateInterval(autoSaveInterval);
+            _autoSaveManager.UpdateTimer(autoSaveInterval, _document);
         }
 
         public async Task CreateFile(string autosaveInterval)
         {
             _document = await _fileManager.LoadFile("");
-            _autoSaveManager.UpdateInterval(autosaveInterval);
+            _autoSaveManager.UpdateTimer(autosaveInterval, _document);
         }
 
         public void ShowFile(ITextBox textBox)
@@ -72,20 +72,19 @@ namespace NoteBookLib.Presentation
 
         public List<string> GetAvailableFileExtensions() => _fileManager.GetAvailableExtensions();
 
-        public async void SaveFile(string filePath)
+        public void SaveFile(string filePath)
         {
             _fileManager.SaveFile(filePath, _document!);
             _undoRedoManager.Clear();
-            _updateTitleCallback.Invoke();
+
         }
 
-        public async void SaveFile()
+        public void SaveFile()
         {
             if (_document != null)
             {
                 _fileManager.SaveFile(_document);
                 _undoRedoManager.Clear();
-                _updateTitleCallback.Invoke();
             }
         }
 
@@ -115,12 +114,12 @@ namespace NoteBookLib.Presentation
         public void Undo()
         {
 
-            _undoRedoManager.Undo(_document);
+            _undoRedoManager.Undo(_document!);
         }
 
         public void Redo()
         {
-            _undoRedoManager.Redo(_document);
+            _undoRedoManager.Redo(_document!);
         }
 
         public bool IsRedoAvailable() =>
@@ -133,25 +132,24 @@ namespace NoteBookLib.Presentation
             _clipboardManager.IsInsertAvailable();
 
         public int FindText(string text) =>
-            _findAndReplaceManager.FindText(text, _document);
+            _findAndReplaceManager.FindText(text, _document!);
 
         public void ReplaceText(string sourceText, string replaceText) =>
-            _findAndReplaceManager.ReplaceText(sourceText, replaceText, _document);
+            _findAndReplaceManager.ReplaceText(sourceText, replaceText, _document!);
 
         public void ReplaceAllText(string sourceText, string replaceText) =>
-            _findAndReplaceManager.ReplaceAllText(sourceText, replaceText, _document);
+            _findAndReplaceManager.ReplaceAllText(sourceText, replaceText, _document!);
 
-        public void UpdateAutosaveInterval(string interval) =>
-            _autoSaveManager.UpdateInterval(interval);
+        public void UpdateAutosaveInterval(string interval)
+        {
+            if (_document != null)
+                _autoSaveManager.UpdateTimer(interval, _document);
+        }
 
         public void PrintContent(IPrinter printer)
         {
-            _document.PrintContent(printer);
+            _document?.PrintContent(printer);
         }
-
-        public string Format(string path) =>
-            _fileManager.Format(path);
-
         public void SetOldValueToBufferTop(int index)
         {
             _clipboardManager.SetOldValueToBufferTop(index);
@@ -159,6 +157,12 @@ namespace NoteBookLib.Presentation
 
         public string GetTextFromBuffer() =>
             _clipboardManager.GetLastValueFromBuffer();
-        
+
+        public string GetExtension() => _document?.GetExtension() ?? ".txt";
+
+        public string GetUniqueTitle() =>
+                _document?.IsPathExists() ?? false ?
+                _fileManager.FormatRepitedPath(_document.GetFileName()) : 
+                _document?.GetFileName() ?? "";
     }
 }

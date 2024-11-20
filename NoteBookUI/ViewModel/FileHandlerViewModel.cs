@@ -1,7 +1,6 @@
 ﻿using Microsoft.Win32;
 using NoteBookLib.Data.FileHandler;
 using NoteBookLib.Domain.FeatureManager;
-using NoteBookLib.FeatureManager;
 using NoteBookLib.Presentation;
 using NoteBookUI.Utils;
 using NoteBookUI.View;
@@ -71,7 +70,7 @@ namespace NoteBookUI.ViewModel
             // Создаем диалог открытия файла
             OpenFileDialog openFileDialog = new()
             {
-                Filter = "Text Files (*.txt)|*.txt|Rich Text Format (*.rtf)|*.rtf|All Files (*.*)|*.*"
+                Filter = "Text Files (*.txt)|*.txt|Rich Text FormatRepitedPath (*.rtf)|*.rtf|All Files (*.*)|*.*"
             };
 
             if (openFileDialog.ShowDialog() == true)
@@ -117,8 +116,8 @@ namespace NoteBookUI.ViewModel
 
             SaveFileDialog saveFileDialog = new()
             {
-                FileName = tab.Format(tab.TitleForSaveDialog() + ".txt"),
-                Filter = tab.GetOpenFileTemplate(),
+                FileName = tab.GetUniqueFileName(),
+                Filter = tab.GetOpenFileTemplate()
             };
 
             if (saveFileDialog.ShowDialog() == true)

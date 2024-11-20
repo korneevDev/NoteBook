@@ -64,7 +64,6 @@ namespace NoteBookUI.ViewModel
             _tabsViewModel.SetSelectedFontSize(_selectedFontSize);
         }
 
-        // Методы для работы с цветами
         public ObservableCollection<SolidColorBrush> GetAvailableColors() => _colors;
 
         public SolidColorBrush GetSelectedTextColor() => _selectedTextColor;

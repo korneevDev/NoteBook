@@ -1,4 +1,4 @@
-﻿namespace NoteBookLib.FeatureManager
+﻿namespace NoteBookLib.Domain.FeatureManager
 {
     public class ClipboardInteractor
     {

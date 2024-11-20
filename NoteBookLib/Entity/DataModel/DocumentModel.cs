@@ -1,12 +1,16 @@
 ﻿using NoteBookLib.Data.FileHandler;
-using NoteBookLib.Presentation.ObjectWrapper;
+using NoteBookLib.Entity.ObjectWrapper;
+using System.IO;
 
 namespace NoteBookLib.Entity.DataModel
 {
     public interface IDocument
     {
         public string Title(string defaultValue);
+
         public bool CanBeRemoved();
+
+        public bool IsPathExists();
 
         public void PrintContent(IPrinter printer);
 
@@ -18,6 +22,8 @@ namespace NoteBookLib.Entity.DataModel
         public void Save(string filePath, IFileHandler fileHandler);
 
         public string GetExtension();
+
+        public string GetFileName();
 
         public bool IsNewFile();
 
@@ -59,22 +65,24 @@ namespace NoteBookLib.Entity.DataModel
             _isModified = true;
         }
 
-        public string Title(string defaultValue) => (string.IsNullOrEmpty(_filePath) ? defaultValue : Path.GetFileName(_filePath)) +
+        public string Title(string defaultValue) => (string.IsNullOrEmpty(_filePath) ? defaultValue : Path.GetFileNameWithoutExtension(_filePath)) +
             (_isModified ? " *" : "");
 
         public bool CanBeRemoved() => !_isModified;
+
+        public bool IsPathExists() => Path.Exists(_filePath);
 
         public void Show(ITextBox textBox) =>
             _content.ShowContent(textBox);
 
 
-        public async void Save(IFileHandler fileHandler)
+        public void Save(IFileHandler fileHandler)
         {
             _content.SaveContent(fileHandler, _filePath);
             _isModified = false;
         }
 
-        public async void Save(string filePath, IFileHandler fileHandler)
+        public void Save(string filePath, IFileHandler fileHandler)
         {
             _filePath = filePath;
             Save(fileHandler);
@@ -113,5 +121,6 @@ namespace NoteBookLib.Entity.DataModel
         public void PrintContent(IPrinter printer) =>
             _content.PrintContent(printer);
 
+        public string GetFileName() => Path.GetFileNameWithoutExtension(_filePath);
     }
 }

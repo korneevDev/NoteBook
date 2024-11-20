@@ -1,26 +1,28 @@
-﻿using NoteBookLib.Presentation;
+﻿using NoteBookLib.Entity.DataModel;
 
 namespace NoteBookLib.Domain.FeatureManager
 {
-    public class AutoSaveInteractor(TextEditor textEditor) : IDisposable
+    public class AutoSaveInteractor(FileManager fileManager)
     {
-        private Timer? autoSaveTimer; // Таймер для автосохранения
-        private readonly TextEditor textEditor = textEditor;
+        private Timer? _autoSaveTimer; // Таймер для автосохранения
+        private readonly FileManager _fileManager = fileManager;
+        private IDocument? _document;
 
         public void Start(int interval) =>
-            autoSaveTimer = new Timer(
+            _autoSaveTimer = new Timer(
                 callback: AutoSaveCallback, null, TimeSpan.Zero, TimeSpan.FromMinutes(interval)
             );
 
-        public void UpdateInterval(string interval)
+        public void UpdateTimer(string interval, IDocument document)
         {
+            _document = document;
             if (int.TryParse(interval, out int intInterval))
             {
                 Start(intInterval);
                 return;
             }
 
-            Dispose();
+            StopTimer();
 
         }
 
@@ -28,8 +30,8 @@ namespace NoteBookLib.Domain.FeatureManager
         private void AutoSaveCallback(object? state)
         {
             try
-            {
-                textEditor.SaveFile();
+            {   if (_document != null) 
+                    _fileManager.SaveFile(_document);
             }
             catch (Exception ex)
             {
@@ -39,11 +41,9 @@ namespace NoteBookLib.Domain.FeatureManager
         }
 
 
-        // Остановка таймера
-        public void Dispose()
+        private void StopTimer()
         {
-            autoSaveTimer?.Dispose(); // Останавливаем таймер
-            autoSaveTimer = null;
+            _autoSaveTimer = null;
         }
     }
 }

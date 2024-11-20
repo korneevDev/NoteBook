@@ -10,21 +10,28 @@ namespace NoteBookLib.Domain.FeatureManager
     {
         private readonly IExtensionProvider _extensionProvider = extensionProvider;
         private readonly IPathFormatter _pathFormatter = pathFormatter;
+        private Action _updateTitleCallback = () => { };
 
+        public void SetOnUpdateTitleCallback(Action updateTitleCallback)
+        {
+            _updateTitleCallback = updateTitleCallback;
+        }
         public async Task<IDocument> LoadFile(string filePath)
         {
 
             string extension = Path.GetExtension(filePath).ToLower();
 
-            return await _extensionProvider.getBuildersDictionary()[extension].MakeDocument(filePath);
+            return await _extensionProvider.GetBuildersDictionary()[extension].MakeDocument(filePath);
 
         }
 
-        public async void SaveFile(string filePath, IDocument document)
+        public void SaveFile(string filePath, IDocument document)
         {
             string extension = Path.GetExtension(filePath).ToLower();
 
-            document.Save(filePath, _extensionProvider.getBuildersDictionary()[extension]);
+            document.Save(filePath, _extensionProvider.GetBuildersDictionary()[extension]);
+
+            _updateTitleCallback.Invoke();
 
         }
 
@@ -32,15 +39,17 @@ namespace NoteBookLib.Domain.FeatureManager
         {
             string extension = document.GetExtension();
 
-            document.Save(_extensionProvider.getBuildersDictionary()[extension]);
+            document.Save(_extensionProvider.GetBuildersDictionary()[extension]);
+
+            _updateTitleCallback.Invoke();
 
         }
 
         public List<string> GetAvailableExtensions() =>
             _extensionProvider.GetExtensionsTemplate();
 
-        public string Format(string path) =>
-            _pathFormatter.Format(path);
+        public string FormatRepitedPath(string path) =>
+            _pathFormatter.FormatRepitedPath(path);
         
     }
 }

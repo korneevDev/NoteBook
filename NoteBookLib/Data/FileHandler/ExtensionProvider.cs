@@ -2,7 +2,7 @@
 {
     public interface IExtensionProvider
     {
-        public Dictionary<string, IFileHandler> getBuildersDictionary();
+        public Dictionary<string, IFileHandler> GetBuildersDictionary();
 
         public List<string> GetExtensionsTemplate();
 
@@ -17,9 +17,9 @@
             };
 
 
-            public Dictionary<string, IFileHandler> getBuildersDictionary() => _dictionary;
+            public Dictionary<string, IFileHandler> GetBuildersDictionary() => _dictionary;
 
-            public List<string> GetExtensionsTemplate() => _dictionary.Keys.ToList();
+            public List<string> GetExtensionsTemplate() => [.. _dictionary.Keys];
         }
     }
 }

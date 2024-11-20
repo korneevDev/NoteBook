@@ -1,10 +1,5 @@
 ﻿using NoteBookUI.View;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace NoteBookUI.ViewModel
@@ -37,6 +32,7 @@ namespace NoteBookUI.ViewModel
             foreach (var tab in _tabs)
             {
                 tab.UpdateAutosaveInterval(interval);
+                
             }
         }
 

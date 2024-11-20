@@ -2,7 +2,7 @@
 using System.Text;
 using NoteBookLib.Entity.DataModel;
 
-namespace NoteBookLib.Data.FileHandler
+namespace NoteBookLib
 {
     public interface IFileHandler
     {
@@ -37,11 +37,11 @@ namespace NoteBookLib.Data.FileHandler
             {
                 return new DocumentModel();
             }
-
-            public async void SaveDocument(string filePath, string content)
+            
+            public void SaveDocument(string filePath, string content)
             {
                 throw new InvalidOperationException();
             }
         }
-    }
+    } 
 }

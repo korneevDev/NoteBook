@@ -1,4 +1,4 @@
-﻿namespace NoteBookLib.Presentation.ObjectWrapper
+﻿namespace NoteBookLib.Entity.ObjectWrapper
 {
     public interface ITextBox
     {
