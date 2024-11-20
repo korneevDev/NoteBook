@@ -2,6 +2,25 @@
 
 namespace NoteBookLib
 {
+    public interface IFileHandleInteractor
+    {
+        public Task LoadFile(string filePath);
+
+        public Task CreateFile();
+
+        public void SaveFile();
+
+        public void SaveFile(string filePath);
+
+    }
+
+    public interface IEditTextInteractor
+    {
+
+    }
+
+    
+
     public class TextEditor
     {
 
@@ -11,7 +30,7 @@ namespace NoteBookLib
         private readonly UndoRedoManager _undoRedoManager;
         private readonly FindAndReplaceManager _findAndReplaceManager;
         private readonly AutoSaveManager _autoSaveManager;
-        private Func<int> _updateTitleCallback;
+        private Action _updateTitleCallback;
 
 
         public TextEditor(ClipboardManager clipboardManager)
@@ -21,10 +40,10 @@ namespace NoteBookLib
             _undoRedoManager = new UndoRedoManager();
             _findAndReplaceManager = new FindAndReplaceManager();
             _autoSaveManager = new AutoSaveManager(this);
-            _updateTitleCallback = () => 0;
+            _updateTitleCallback = () => { };
         }
 
-        public void setOnUpdateTitleCallback(Func<int> updateTitleCallback)
+        public void SetOnUpdateTitleCallback(Action updateTitleCallback)
         {
             _updateTitleCallback = updateTitleCallback;
         }

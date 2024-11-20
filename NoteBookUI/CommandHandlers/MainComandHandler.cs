@@ -1,4 +1,5 @@
-using NoteBookUI.View;
+using NoteBookLib;
+using NoteBookUI.ViewModel;
 
 
 namespace NoteBookUI.CommandHandlers
@@ -13,17 +14,33 @@ namespace NoteBookUI.CommandHandlers
 
         public MainComandHandler()
         {
-            var mainViewModel = new MainViewModel();
+            var pathFormatter = new IPathFormatter.Base();
+            var clipboardManager = new ClipboardManager();
 
-            FileCommands = new FileCommandsHandler(mainViewModel);
+            var tabsViewModel = new TabsViewModel();
+            var fontViewModel = new FontViewModel(tabsViewModel);
+            var fileHandlerViewModel = 
+                new FileHandlerViewModel(
+                    fontViewModel, clipboardManager, 
+                    pathFormatter, tabsViewModel
+                );
 
-            EditCommands = new EditCommandsHandler(mainViewModel);
+            var openWindowDialogViewModel = 
+                new OpenWindowDialogViewModel(
+                    fileHandlerViewModel, 
+                    fontViewModel, 
+                    clipboardManager
+                );
 
-            ViewCommands = new ViewCommandsHandler(mainViewModel);
+            var editFileViewModel = new EditFileViewModel();
 
-            ViewCommands = new ViewCommandsHandler(mainViewModel);
+            FileCommands = new FileCommandsHandler(fileHandlerViewModel, tabsViewModel);
 
-            FontsCommands = new FontCommandsHandler(mainViewModel);
+            EditCommands = new EditCommandsHandler(editFileViewModel, tabsViewModel);
+
+            ViewCommands = new ViewCommandsHandler(openWindowDialogViewModel, tabsViewModel);
+
+            FontsCommands = new FontCommandsHandler(fontViewModel);
         }
 
         

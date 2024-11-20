@@ -1,20 +1,23 @@
 ﻿using NoteBookUI.View;
+using NoteBookUI.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace NoteBookUI.CommandHandlers
 {
-    public class FileCommandsHandler(MainViewModel mainViewModel)
+    public class FileCommandsHandler(
+        FileHandlerViewModel _mainViewModel, 
+        TabsViewModel _tabsViewModel
+        )
     {
-        private readonly MainViewModel mainViewModel = mainViewModel;
-        public ObservableCollection<FileView> Tabs => mainViewModel.GetTabsList();
-        public ICommand CloseTabCommand { get; } = new RelayCommand<FileView>(mainViewModel.CloseTab);
+        public ObservableCollection<FileView> Tabs => _tabsViewModel.GetTabsList();
+        public ICommand CloseTabCommand { get; } = new RelayCommand<FileView>(_mainViewModel.CloseTab);
 
-        public ICommand NewTabCommand { get; } = new RelayCommand(mainViewModel.CreateNewTab);
-        public ICommand OpenFileCommand { get; } = new RelayCommand(mainViewModel.OpenExisttingFile);
+        public ICommand NewTabCommand { get; } = new RelayCommand(_mainViewModel.CreateNewTab);
+        public ICommand OpenFileCommand { get; } = new RelayCommand(_mainViewModel.OpenExisttingFile);
 
-        public ICommand SaveFileCommand { get; } = new RelayCommand<FileView>(mainViewModel.SaveFile, mainViewModel.CanExecuteFileCommand);
+        public ICommand SaveFileCommand { get; } = new RelayCommand<FileView>(_mainViewModel.SaveFile, _tabsViewModel.CanExecuteTabCommand);
 
-        public ICommand SaveFileAsCommand { get; } = new RelayCommand<FileView>(mainViewModel.SaveFileAs, mainViewModel.CanExecuteFileCommand);
+        public ICommand SaveFileAsCommand { get; } = new RelayCommand<FileView>(_mainViewModel.SaveFileAs, _tabsViewModel.CanExecuteTabCommand);
     }
 }

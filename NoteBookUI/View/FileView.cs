@@ -47,18 +47,16 @@ namespace NoteBookUI.View
             };
 
             tabViewModel.ShowFile(new ExtendedTextBox(TextBox));
-            TextBox.TextChanged += RichTextBox_TextChanged;
+            TextBox.TextChanged += TextBoxTextChanged;
 
-            tabViewModel.setOnUpdateTitleCallback(() =>
+            tabViewModel.SetOnUpdateTitleCallback(() =>
             {
                 OnPropertyChanged(nameof(Title));
-                return 0;
             });
         }
 
-        private void RichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
-            
             string currentText = TextBox.Text;
             tabTextEditor.CommitTextChange(currentText);
         }
@@ -95,17 +93,17 @@ namespace NoteBookUI.View
         public void Undo()
         {
             tabTextEditor.Undo();
-            TextBox.TextChanged -= RichTextBox_TextChanged;
+            TextBox.TextChanged -= TextBoxTextChanged;
             tabTextEditor.ShowFile(new ExtendedTextBox(TextBox));
-            TextBox.TextChanged += RichTextBox_TextChanged;
+            TextBox.TextChanged += TextBoxTextChanged;
         }
 
         public void Redo()
         {
             tabTextEditor.Redo();
-            TextBox.TextChanged -= RichTextBox_TextChanged;
+            TextBox.TextChanged -= TextBoxTextChanged;
             tabTextEditor.ShowFile(new ExtendedTextBox(TextBox));
-            TextBox.TextChanged += RichTextBox_TextChanged;
+            TextBox.TextChanged += TextBoxTextChanged;
         }
 
         public bool IsRedoAvailable()
@@ -165,21 +163,6 @@ namespace NoteBookUI.View
         public void UpdateFont(FontFamily selectedFont)
         {
             TextBox.FontFamily = selectedFont;
-        }
-    }
-
-    public class ExtendedTextBox : ITextBox
-    {
-        private readonly TextBox _box;
-
-        public ExtendedTextBox(TextBox textBox)
-        {
-            _box = textBox;
-        }
-
-        public void ShowString(string str)
-        {
-            _box.Text = str;
         }
     }
 }

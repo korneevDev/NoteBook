@@ -1,34 +1,33 @@
-﻿using NoteBookUI.View;
+﻿using NoteBookUI.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 
 namespace NoteBookUI.CommandHandlers
 {
-    public class FontCommandsHandler(MainViewModel mainViewModel) : OnPropertyChangedHandler
+    public class FontCommandsHandler(FontViewModel _fontViewModel) : OnPropertyChangedHandler
     {
-        private readonly MainViewModel mainViewModel = mainViewModel;
 
-        public ObservableCollection<FontFamily> AvailableFonts => mainViewModel.GetAvailableFonts();
-        public ObservableCollection<double> AvailableFontSizes => mainViewModel.GetAvailableFontSizes();
+        public ObservableCollection<FontFamily> AvailableFonts => _fontViewModel.GetAvailableFonts();
+        public ObservableCollection<double> AvailableFontSizes => _fontViewModel.GetAvailableFontSizes();
 
         public FontFamily SelectedFont
         {
-            get => mainViewModel.GetSelectedFont(); set
+            get => _fontViewModel.GetSelectedFont(); set
             {
                 if (value != SelectedFont)
                 {
-                    mainViewModel.SetSelectedFont(value);
+                    _fontViewModel.SetSelectedFont(value);
                     OnPropertyChanged(nameof(SelectedFont));
                 }
             }
         }
         public double SelectedFontSize
         {
-            get => mainViewModel.GetSelectedFontSize(); set
+            get => _fontViewModel.GetSelectedFontSize(); set
             {
                 if (value != SelectedFontSize)
                 {
-                    mainViewModel.SetSelectedFontSize(value);
+                    _fontViewModel.SetSelectedFontSize(value);
                     OnPropertyChanged(nameof(SelectedFontSize));
                 }
             }

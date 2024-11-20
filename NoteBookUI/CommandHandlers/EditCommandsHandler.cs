@@ -1,18 +1,22 @@
 ﻿using NoteBookUI.View;
+using NoteBookUI.ViewModel;
 using System.Windows.Input;
 
 namespace NoteBookUI.CommandHandlers
 {
-    public class EditCommandsHandler(MainViewModel mainViewModel)
+    public class EditCommandsHandler(
+        EditFileViewModel _editViewModel, 
+        TabsViewModel _tabsViewModel
+        )
     {
-        public ICommand CopyCommand { get; } = new RelayCommand<FileView>(mainViewModel.Copy, mainViewModel.CanExecuteFileCommand);
-        public ICommand InsertCommand { get; } = new RelayCommand<FileView>(mainViewModel.Insert, mainViewModel.CanExecuteFileCommand);
-        public ICommand CutCommand { get; } = new RelayCommand<FileView>(mainViewModel.Cut, mainViewModel.CanExecuteFileCommand);
+        public ICommand CopyCommand { get; } = new RelayCommand<FileView>(_editViewModel.Copy, _tabsViewModel.CanExecuteTabCommand);
+        public ICommand InsertCommand { get; } = new RelayCommand<FileView>(_editViewModel.Insert, _tabsViewModel.CanExecuteTabCommand);
+        public ICommand CutCommand { get; } = new RelayCommand<FileView>(_editViewModel.Cut, _tabsViewModel.CanExecuteTabCommand);
 
-        public ICommand FindCommand { get; } = new RelayCommand<FileView>(mainViewModel.FindAndReplace, mainViewModel.CanExecuteFileCommand);
+        public ICommand FindCommand { get; } = new RelayCommand<FileView>(_editViewModel.FindAndReplace, _tabsViewModel.CanExecuteTabCommand);
 
-        public ICommand UndoCommand { get; } = new RelayCommand<FileView>(mainViewModel.Undo, mainViewModel.isUndoAvailable);
+        public ICommand UndoCommand { get; } = new RelayCommand<FileView>(_editViewModel.Undo, _editViewModel.IsUndoAvailable);
 
-        public ICommand RedoCommand { get; } = new RelayCommand<FileView>(mainViewModel.Redo, mainViewModel.isRedoAvailable);
+        public ICommand RedoCommand { get; } = new RelayCommand<FileView>(_editViewModel.Redo, _editViewModel.IsRedoAvailable);
     }
 }
