@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using NoteBookLib;
+using NoteBookLib.FeatureManager;
+using NoteBookLib.FileHandler;
 using NoteBookUI.Utils;
 using NoteBookUI.View;
 using System.Windows;

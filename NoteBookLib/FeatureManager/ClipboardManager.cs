@@ -1,9 +1,9 @@
-﻿namespace NoteBookLib
+﻿namespace NoteBookLib.FeatureManager
 {
     public class ClipboardManager
     {
         private readonly List<string> _buffer;
-        
+
         public ClipboardManager()
         {
             _buffer = [];
@@ -28,6 +28,6 @@
         }
         public bool IsInsertAvailable() =>
             _buffer.Count != 0;
-        
+
     }
 }

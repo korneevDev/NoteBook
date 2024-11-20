@@ -2,7 +2,7 @@
 using System.Text;
 using NoteBookLib.DataModel;
 
-namespace NoteBookLib
+namespace NoteBookLib.FileHandler
 {
     public interface IFileHandler
     {
@@ -43,5 +43,5 @@ namespace NoteBookLib
                 throw new InvalidOperationException();
             }
         }
-    } 
+    }
 }

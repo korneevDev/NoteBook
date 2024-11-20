@@ -1,4 +1,4 @@
-﻿using NoteBookLib;
+﻿using NoteBookLib.FeatureManager;
 using System.Windows;
 using System.Windows.Controls;
 

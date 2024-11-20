@@ -1,4 +1,4 @@
-﻿using NoteBookLib;
+﻿using NoteBookLib.FeatureManager;
 using NoteBookUI.View;
 using System;
 using System.Collections.Generic;

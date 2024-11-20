@@ -1,6 +1,6 @@
 ﻿using NoteBookLib.DataModel;
 
-namespace NoteBookLib
+namespace NoteBookLib.FeatureManager
 {
     public class FindAndReplaceManager
     {
@@ -12,14 +12,12 @@ namespace NoteBookLib
             index = -1;
         }
 
-        public void ReplaceAllText(string sourceText, string replaceText, IDocument _document)
-        {
+        public void ReplaceAllText(string sourceText, string replaceText, IDocument _document) =>
             _document.ReplaceText(sourceText, replaceText);
-        }
 
         public void ReplaceText(string sourceText, string replaceText, IDocument _document)
         {
-            if(index != -1)
+            if (index != -1)
                 _document.ReplaceText(sourceText, replaceText, index);
         }
 
@@ -31,7 +29,7 @@ namespace NoteBookLib
                 index = -1;
             }
 
-            int findedIndex = document.FindSubstringIndexes(lastSearched, index+1);
+            int findedIndex = document.FindSubstringIndexes(lastSearched, index + 1);
 
             if (findedIndex != -1)
             {
@@ -41,7 +39,7 @@ namespace NoteBookLib
             if (findedIndex == -1 && index != -1)
             {
                 index = -1;
-                findedIndex = document.FindSubstringIndexes(lastSearched, index+1);
+                findedIndex = document.FindSubstringIndexes(lastSearched, index + 1);
                 index = findedIndex;
             }
 

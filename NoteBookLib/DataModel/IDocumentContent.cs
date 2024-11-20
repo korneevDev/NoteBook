@@ -1,4 +1,6 @@
-﻿namespace NoteBookLib.DataModel
+﻿using NoteBookLib.FileHandler;
+
+namespace NoteBookLib.DataModel
 {
     public interface IDocumentContent
     {

@@ -1,4 +1,5 @@
-using NoteBookLib;
+using NoteBookLib.FeatureManager;
+using NoteBookLib.FileHandler;
 using NoteBookUI.ViewModel;
 
 

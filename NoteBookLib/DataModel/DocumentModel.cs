@@ -1,4 +1,6 @@
-﻿namespace NoteBookLib.DataModel
+﻿using NoteBookLib.FileHandler;
+
+namespace NoteBookLib.DataModel
 {
     public interface IDocument
     {
@@ -28,11 +30,6 @@
         public void ReplaceText(string text, string newText);
 
         public void ReplaceText(string text, string newText, int index);
-    }
-
-    public interface ITextBox
-    {
-        public void ShowString(string str);
     }
 
     public class DocumentModel : IDocument

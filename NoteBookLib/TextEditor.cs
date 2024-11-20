@@ -1,6 +1,8 @@
 ﻿
 
 using NoteBookLib.DataModel;
+using NoteBookLib.FeatureManager;
+using NoteBookLib.FileHandler;
 
 namespace NoteBookLib
 {
@@ -37,7 +39,8 @@ namespace NoteBookLib
 
         public TextEditor(ClipboardManager clipboardManager)
         {
-            _fileManager = new FileManager();
+            IExtensionProvider extensionProvider = new IExtensionProvider.Base();
+            _fileManager = new FileManager(extensionProvider);
             _clipboardManager = clipboardManager;
             _undoRedoManager = new UndoRedoManager();
             _findAndReplaceManager = new FindAndReplaceManager();

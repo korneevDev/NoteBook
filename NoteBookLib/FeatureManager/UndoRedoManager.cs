@@ -1,6 +1,6 @@
 ﻿using NoteBookLib.DataModel;
 
-namespace NoteBookLib
+namespace NoteBookLib.FeatureManager
 {
     public class UndoRedoManager
     {
@@ -41,11 +41,11 @@ namespace NoteBookLib
 
         public bool IsRedoAvailable() =>
             redoStack.Count != 0;
-        
+
 
         public bool IsUndoAvailable() =>
             undoStack.Count != 0;
-        
+
 
     }
 }
