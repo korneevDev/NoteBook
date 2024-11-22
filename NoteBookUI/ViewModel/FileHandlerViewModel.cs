@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 using NoteBookLib.Data.FileHandler;
-using NoteBookLib.Domain.FeatureManager;
+using NoteBookLib.Domain.FeatureInteractor;
 using NoteBookLib.Presentation;
 using NoteBookUI.Utils;
 using NoteBookUI.View;

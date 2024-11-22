@@ -1,8 +1,8 @@
 ﻿using NoteBookLib.Entity.DataModel;
 
-namespace NoteBookLib.Domain.FeatureManager
+namespace NoteBookLib.Domain.FeatureInteractor
 {
-    public class FindAndReplaceManager
+    public class FindAndReplaceInteractor
     {
         private string lastSearched = "";
         private int index = -1;
@@ -12,8 +12,12 @@ namespace NoteBookLib.Domain.FeatureManager
             index = -1;
         }
 
-        public void ReplaceAllText(string sourceText, string replaceText, IDocument _document) =>
+        public void ReplaceAllText(string sourceText, string replaceText, IDocument _document)
+        {
+            lastSearched = "";
+            index = -1; 
             _document.ReplaceText(sourceText, replaceText);
+        }
 
         public void ReplaceText(string sourceText, string replaceText, IDocument _document)
         {

@@ -1,9 +1,9 @@
 ﻿using NoteBookLib.Data.FileHandler;
 using NoteBookLib.Entity.DataModel;
 
-namespace NoteBookLib.Domain.FeatureManager
+namespace NoteBookLib.Domain.FeatureInteractor
 {
-    public class FileManager(
+    public class FileInteractor(
         IExtensionProvider extensionProvider, 
         IPathFormatter pathFormatter
         )

@@ -1,5 +1,5 @@
 ﻿using NoteBookLib.Data.FileHandler;
-using NoteBookLib.Domain.FeatureManager;
+using NoteBookLib.Domain.FeatureInteractor;
 using NoteBookLib.Entity.DataModel;
 using NoteBookLib.Entity.ObjectWrapper;
 
@@ -10,10 +10,10 @@ namespace NoteBookLib.Presentation
     {
 
         private IDocument? _document;
-        private readonly FileManager _fileManager;
+        private readonly FileInteractor _fileManager;
         private readonly ClipboardInteractor _clipboardManager;
-        private readonly UndoRedoManager _undoRedoManager;
-        private readonly FindAndReplaceManager _findAndReplaceManager;
+        private readonly UndoRedonteractor _undoRedoManager;
+        private readonly FindAndReplaceInteractor _findAndReplaceManager;
         private readonly AutoSaveInteractor _autoSaveManager;
         private Action _updateTitleCallback;
 
@@ -21,10 +21,10 @@ namespace NoteBookLib.Presentation
         public TextEditor(ClipboardInteractor clipboardManager, IPathFormatter pathFormatter)
         {
             IExtensionProvider extensionProvider = new IExtensionProvider.Base();
-            _fileManager = new FileManager(extensionProvider, pathFormatter);
+            _fileManager = new FileInteractor(extensionProvider, pathFormatter);
             _clipboardManager = clipboardManager;
-            _undoRedoManager = new UndoRedoManager();
-            _findAndReplaceManager = new FindAndReplaceManager();
+            _undoRedoManager = new UndoRedonteractor();
+            _findAndReplaceManager = new FindAndReplaceInteractor();
             _autoSaveManager = new AutoSaveInteractor(_fileManager);
             _updateTitleCallback = () => { };
         }       

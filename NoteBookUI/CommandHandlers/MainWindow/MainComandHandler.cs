@@ -1,5 +1,5 @@
 using NoteBookLib.Data.FileHandler;
-using NoteBookLib.Domain.FeatureManager;
+using NoteBookLib.Domain.FeatureInteractor;
 using NoteBookUI.ViewModel;
 
 

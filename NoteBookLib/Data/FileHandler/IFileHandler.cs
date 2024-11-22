@@ -33,9 +33,9 @@ namespace NoteBookLib
 
         public class NewTextDocumentHandler : IFileHandler
         {
-            public async Task<IDocument> MakeDocument(string filePath)
+            public Task<IDocument> MakeDocument(string filePath)
             {
-                return new DocumentModel();
+                return Task.FromResult<IDocument>(new DocumentModel());
             }
             
             public void SaveDocument(string filePath, string content)

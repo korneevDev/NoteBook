@@ -1,13 +1,13 @@
 ﻿using NoteBookLib.Entity.DataModel;
 
-namespace NoteBookLib.Domain.FeatureManager
+namespace NoteBookLib.Domain.FeatureInteractor
 {
-    public class UndoRedoManager
+    public class UndoRedonteractor
     {
         private readonly Stack<IDocumentChange> undoStack;
         private readonly Stack<IDocumentChange> redoStack;
 
-        public UndoRedoManager()
+        public UndoRedonteractor()
         {
             undoStack = new Stack<IDocumentChange>();
             redoStack = new Stack<IDocumentChange>();

@@ -1,11 +1,11 @@
 ﻿using NoteBookLib.Entity.DataModel;
 
-namespace NoteBookLib.Domain.FeatureManager
+namespace NoteBookLib.Domain.FeatureInteractor
 {
-    public class AutoSaveInteractor(FileManager fileManager)
+    public class AutoSaveInteractor(FileInteractor fileManager)
     {
         private Timer? _autoSaveTimer; // Таймер для автосохранения
-        private readonly FileManager _fileManager = fileManager;
+        private readonly FileInteractor _fileManager = fileManager;
         private IDocument? _document;
 
         public void Start(int interval) =>
@@ -43,6 +43,7 @@ namespace NoteBookLib.Domain.FeatureManager
 
         private void StopTimer()
         {
+            _autoSaveTimer?.Dispose();
             _autoSaveTimer = null;
         }
     }
