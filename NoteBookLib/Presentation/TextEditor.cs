@@ -10,12 +10,12 @@ namespace NoteBookLib.Presentation
     {
 
         private IDocument? _document;
-        private readonly FileInteractor _fileManager;
-        private readonly ClipboardInteractor _clipboardManager;
-        private readonly UndoRedonteractor _undoRedoManager;
-        private readonly FindAndReplaceInteractor _findAndReplaceManager;
-        private readonly AutoSaveInteractor _autoSaveManager;
-        private Action _updateTitleCallback;
+        private FileInteractor _fileManager;
+        private ClipboardInteractor _clipboardManager;
+        private UndoRedonteractor _undoRedoManager;
+        private FindAndReplaceInteractor _findAndReplaceManager;
+        private AutoSaveInteractor _autoSaveManager;
+        private Action? _updateTitleCallback;
 
 
         public TextEditor(ClipboardInteractor clipboardManager, IPathFormatter pathFormatter)
@@ -26,7 +26,7 @@ namespace NoteBookLib.Presentation
             _undoRedoManager = new UndoRedonteractor();
             _findAndReplaceManager = new FindAndReplaceInteractor();
             _autoSaveManager = new AutoSaveInteractor(_fileManager);
-            _updateTitleCallback = () => { };
+            _updateTitleCallback = null;
         }       
 
         public void SetOnUpdateTitleCallback(Action updateTitleCallback)
@@ -80,7 +80,7 @@ namespace NoteBookLib.Presentation
             _undoRedoManager.AddUndo(change);
             _document.SetNewContent(text);
             _findAndReplaceManager.ClearCounter();
-            _updateTitleCallback.Invoke();
+            _updateTitleCallback?.Invoke();
         }
 
         public bool CanRemove() => _document?.CanBeRemoved() ?? true;
@@ -146,5 +146,23 @@ namespace NoteBookLib.Presentation
                 _document?.IsPathExists() ?? false ?
                 _fileManager.FormatRepitedPath(_document.GetFileName()) : 
                 _document?.GetFileName() ?? "";
+
+        public void Dispose()
+        {
+            _document = null;
+            _autoSaveManager.Dispose();
+            _autoSaveManager = null;
+            _clipboardManager.Dispose();
+            _clipboardManager = null;
+            _fileManager.Dispose();
+            _fileManager = null;
+            _findAndReplaceManager.Dispose();
+            _findAndReplaceManager = null;
+            _undoRedoManager.Dispose();
+            _undoRedoManager = null;
+            _updateTitleCallback = null;
+
+
+        }
     }
 }

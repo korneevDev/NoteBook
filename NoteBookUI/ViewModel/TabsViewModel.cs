@@ -74,6 +74,7 @@ namespace NoteBookUI.ViewModel
 
         public void RemoveTab(FileView tab)
         {
+            tab.Dispose();
             _tabs.Remove(tab);
         }
 

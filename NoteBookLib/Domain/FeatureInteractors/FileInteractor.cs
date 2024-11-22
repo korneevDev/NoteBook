@@ -8,8 +8,8 @@ namespace NoteBookLib.Domain.FeatureInteractor
         IPathFormatter pathFormatter
         )
     {
-        private readonly IExtensionProvider _extensionProvider = extensionProvider;
-        private readonly IPathFormatter _pathFormatter = pathFormatter;
+        private IExtensionProvider _extensionProvider = extensionProvider;
+        private IPathFormatter _pathFormatter = pathFormatter;
         private Action _updateTitleCallback = () => { };
 
         public void SetOnUpdateTitleCallback(Action updateTitleCallback)
@@ -50,6 +50,12 @@ namespace NoteBookLib.Domain.FeatureInteractor
 
         public string FormatRepitedPath(string path) =>
             _pathFormatter.FormatRepitedPath(path);
-        
+
+        public void Dispose()
+        {
+            _extensionProvider = null;
+            _pathFormatter = null;
+            _updateTitleCallback = null;
+        }
     }
 }

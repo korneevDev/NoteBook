@@ -46,6 +46,10 @@ namespace NoteBookLib.Domain.FeatureInteractor
         public bool IsUndoAvailable() =>
             undoStack.Count != 0;
 
-
+        public void Dispose()
+        {
+            undoStack.Clear();
+            redoStack.Clear();
+        }
     }
 }

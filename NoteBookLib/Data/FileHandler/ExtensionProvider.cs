@@ -16,7 +16,6 @@
                 { "", new IFileHandler.NewTextDocumentHandler() },
             };
 
-
             public Dictionary<string, IFileHandler> GetBuildersDictionary() => _dictionary;
 
             public List<string> GetExtensionsTemplate() => [.. _dictionary.Keys];

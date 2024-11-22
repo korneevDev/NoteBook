@@ -10,7 +10,7 @@ using NoteBookUI.Utils;
 namespace NoteBookUI.View
 {
 
-    public class FileView : OnPropertyChangedHandler
+    public class FileView : OnPropertyChangedHandler, IDisposable
     {
 
         private readonly TextEditor tabTextEditor;
@@ -151,7 +151,7 @@ namespace NoteBookUI.View
                     template += template + "|" + StringResourceManager.GetString(extension) + "|*" + extension;
             }
 
-            return template.Substring(1);
+            return template[1..];
         }
 
         public void UpdateFontSize(double selectedFontSize) =>
@@ -194,5 +194,11 @@ namespace NoteBookUI.View
 
         public string GetUniqueFileName() =>
             tabTextEditor.GetUniqueTitle();
+
+        public void Dispose()
+        {
+
+            tabTextEditor.Dispose();
+        }
     }
 }

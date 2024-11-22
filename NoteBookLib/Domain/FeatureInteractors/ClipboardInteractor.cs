@@ -1,6 +1,7 @@
-﻿namespace NoteBookLib.Domain.FeatureInteractor
+﻿
+namespace NoteBookLib.Domain.FeatureInteractor
 {
-    public class ClipboardInteractor
+    public class ClipboardInteractor : IDisposable
     {
         private readonly List<string> _buffer;
 
@@ -27,5 +28,9 @@
         public bool IsInsertAvailable() =>
             _buffer.Count != 0;
 
+        public void Dispose()
+        {
+            _buffer.Clear();
+        }
     }
 }

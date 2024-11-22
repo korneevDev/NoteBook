@@ -2,7 +2,7 @@
 
 namespace NoteBookLib.Domain.FeatureInteractor
 {
-    public class AutoSaveInteractor(FileInteractor fileManager)
+    public class AutoSaveInteractor(FileInteractor fileManager) : IDisposable
     {
         private Timer? _autoSaveTimer; // Таймер для автосохранения
         private readonly FileInteractor _fileManager = fileManager;
@@ -45,6 +45,13 @@ namespace NoteBookLib.Domain.FeatureInteractor
         {
             _autoSaveTimer?.Dispose();
             _autoSaveTimer = null;
+        }
+
+        public void Dispose()
+        {
+            StopTimer();    
+            _fileManager.Dispose();
+            _document = null;
         }
     }
 }

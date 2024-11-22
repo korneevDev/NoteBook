@@ -2,7 +2,7 @@
 
 namespace NoteBookLib.Domain.FeatureInteractor
 {
-    public class FindAndReplaceInteractor
+    public class FindAndReplaceInteractor : IDisposable
     {
         private string lastSearched = "";
         private int index = -1;
@@ -48,6 +48,12 @@ namespace NoteBookLib.Domain.FeatureInteractor
             }
 
             return findedIndex;
+        }
+
+        public void Dispose()
+        {
+            lastSearched = null;
+            index = -1;
         }
     }
 }
